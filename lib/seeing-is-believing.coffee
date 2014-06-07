@@ -22,11 +22,28 @@ module.exports =
     # atom.workspaceView.command "seeing-is-believing:removeAnnotations",      => @remove_annotations()
 
   annotateDocument: ->
+    # default_options="$default_options --shebang $TM_RUBY"
+    #
+    # if [ -n "$TM_FILEPATH" ]; then
+    #   default_options="$default_options --as $TM_FILEPATH"
+    # fi
+    #
+    # "${TM_RUBY}" -S seeing_is_believing $default_options
+
+    # --shebang ruby-executable # if you want SiB to use some ruby other than the one in the path
     editor        = atom.workspace.activePaneItem
     bodySelection = editor.selectAll()[0]
     crntBody      = bodySelection.getText()
     newBody       = ""
-    sib           = spawn "seeing_is_believing", []
+    sib           = spawn "seeing_is_believing", [
+      '-Ku',
+      '--alignment-strategy', 'line',
+      '--number-of-captures', '200',
+      '--result-length',      '200',
+      '--alignment-strategy', 'chunk',
+      '--timeout',            '12'
+      # '--shebang',            '...' # chruby won't work until we figure out env vars
+    ]
 
     sib.stdout.on 'data', (output) ->
       newBody += output
@@ -41,5 +58,7 @@ module.exports =
 
 
   annotateMagicCmments: ->
+    # -x,  --xmpfilter-style         # annotate marked lines instead of every line
 
   removeAnnotations: ->
+    # -c,  --clean                   # remove annotations from previous runs of seeing_is_believing
