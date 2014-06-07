@@ -9,18 +9,23 @@ module.exports =
     # atom.workspaceView.command "seeing-is-believing:removeAnnotations",      => @remove_annotations()
 
   annotateDocument: ->
-    console.log("omgomgomg")
-    # editor        = atom.workspace.activePaneItem
-    # bodySelection = editor.selectAll()[0]
-    # newBody       = ""
-    # sib           = spawn "ls", []
-    #
-    # sib.stdout.on 'data', (output) -> newBody += output
-    #
-    # cat.stdin.write(bodySelection.getText())
-    # cat.stdin.end()
-    #
-    # bodySelection.insertText(newBody)
+    editor        = atom.workspace.activePaneItem
+    bodySelection = editor.selectAll()[0]
+    crntBody      = bodySelection.getText()
+    newBody       = ""
+    sib           = spawn "seeing_is_believing", []
+
+    sib.stdout.on 'data', (output) ->
+      newBody += output
+
+    sib.on 'close', (code) ->
+      bodySelection.insertText(newBody)
+
+    sib.stdin.write(crntBody)
+    sib.stdin.end()
+
+
+
 
   annotateMagicCmments: ->
 
