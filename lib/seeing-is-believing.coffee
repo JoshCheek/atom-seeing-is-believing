@@ -67,7 +67,7 @@ module.exports =
     delete newEnvVars.ADD_TO_PATH
     env           = this.merge process.env, newEnvVars
     if env.PATH
-      env.PATH = env.PATH + ":" + addToPath
+      env.PATH = addToPath + ":" + env.PATH
     else
       env.PATH = addToPATH
 
