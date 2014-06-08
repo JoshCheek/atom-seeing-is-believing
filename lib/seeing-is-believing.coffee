@@ -25,6 +25,7 @@ module.exports =
     editor        = atom.workspace.activePaneItem
     bodySelection = editor.selectAll()[0]
     crntBody      = bodySelection.getText()
+    fileName      = editor.getPath()
     newBody       = ""
 
 
@@ -44,6 +45,8 @@ module.exports =
       '--timeout',            '12'
       '--shebang',            '/Users/josh/.rubies/ruby-2.1.1/bin/ruby'
     ]
+    flags.push("--as", fileName) if fileName
+
     # values taken from running `env` after loading chruby
     # you will need to figure out what your env vars should be
     # for rvm, if you use the wrapper method, you don't need any
