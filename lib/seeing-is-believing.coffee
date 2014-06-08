@@ -71,7 +71,9 @@ module.exports =
     else
       env.PATH = addToPATH
 
+    console.log("Invoking Seeing is believing with flags & env:", flags, env)
     sib = spawn "/Users/josh/.rubies/ruby-2.1.1/bin/ruby", flags, {"env": env}
+    # sib = spawn "/Users/josh/.rubies/ruby-2.1.1/bin/ruby", ['-Ku', '-e', 'raise $stdin.read.encoding.inspect'], {"env": env}
 
     sib.stdout.on 'data', (output) ->
       console.log(""+output)
@@ -84,10 +86,11 @@ module.exports =
       console.log("Seeing is Believing closed with code " + code)
       bodySelection.insertText(newBody)
 
+    fs = require('fs')
+    fs.writeFile("/Users/josh/code/jsl/register_for_class/f2.rb", crntBody)
+    sib.stdin.setEncoding('utf8')
     sib.stdin.write(crntBody)
     sib.stdin.end()
-
-
 
 
   annotateMagicCmments: ->
