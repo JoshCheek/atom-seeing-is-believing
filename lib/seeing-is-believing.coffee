@@ -23,7 +23,6 @@ spawn = require('child_process').spawn
 #       '--result-length',      '200',
 #       '--alignment-strategy', 'chunk',
 #       '--timeout',            '12'
-#       '--shebang',            '/Users/josh/.rubies/ruby-2.1.1/bin/ruby'
 #     ]
 
 # might be cool to use the -j option to split into a second or third pane
@@ -79,8 +78,10 @@ module.exports =
     editor        = atom.workspace.activePaneItem
     fileName      = editor.getPath()
 
+    # if file is saved, run as that file (otherwise uses a tempfile)
     flags.push("--as", fileName) if fileName
 
+    # add new path locations
     addToPath = newEnvVars.ADD_TO_PATH || ""
     delete newEnvVars.ADD_TO_PATH
     env = this.merge process.env, newEnvVars
@@ -88,6 +89,10 @@ module.exports =
       env.PATH = addToPath + ":" + env.PATH
     else
       env.PATH = addToPATH
+
+    # add shebang
+    if flags.indexOf('--shebang') != -1
+      flags.push '--shebang', rubyCommand
 
     sibConfig.env         = env
     sibConfig.flags       = flags
