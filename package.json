@@ -1,8 +1,8 @@
 {
   "name": "seeing-is-believing",
   "main": "./lib/seeing-is-believing",
-  "version": "0.0.0",
-  "description": "A short description of your package",
+  "version": "0.1.0",
+  "description": "Runs your code, adding comments to each line, showing the inspection of what that line evaluates to.",
   "activationEvents": ["seeing-is-believing:annotate-document",
                        "seeing-is-believing:annotate-magic-comments",
                        "seeing-is-believing:remove-annotations"],
