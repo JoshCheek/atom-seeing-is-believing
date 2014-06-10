@@ -6,7 +6,7 @@
   "activationEvents": ["seeing-is-believing:annotate-document",
                        "seeing-is-believing:annotate-magic-comments",
                        "seeing-is-believing:remove-annotations"],
-  "repository": "https://github.com/JoshCheek/atom-seeing_is_believing",
+  "repository": "https://github.com/JoshCheek/atom-seeing-is-believing",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
