@@ -1,30 +1,6 @@
 # http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
 spawn = require('child_process').spawn
 
-# ADDED TO MY ~/.atom/config.cson
-# 'seeing-is-believing':
-#   'ruby-command': '/Users/josh/.rubies/ruby-2.1.1/bin/ruby'
-#   'add-t-env':
-#     'GEM_HOME'        : '/Users/josh/.gem/ruby/2.1.1',
-#     'GEM_PATH'        : '/Users/josh/.gem/ruby/2.1.1:/Users/josh/.rubies/ruby-2.1.1/lib/ruby/gems/2.1.0',
-#     'GEM_ROOT'        : '/Users/josh/.rubies/ruby-2.1.1/lib/ruby/gems/2.1.0',
-#     'RUBIES'          : '/Users/josh/.rubies/ruby-2.1.1',
-#     'RUBYOPT'         : '',
-#     'RUBY_ENGINE'     : 'ruby',
-#     'RUBY_PATCHLEVEL' : '76',
-#     'RUBY_ROOT'       : '/Users/josh/.rubies/ruby-2.1.1',
-#     'RUBY_VERSION'    : '2.1.1',
-#     'ADD_TO_PATH'     : '/Users/josh/.gem/ruby/2.1.1/bin:/Users/josh/.rubies/ruby-2.1.1/lib/ruby/gems/2.1.0/bin:/Users/josh/.rubies/ruby-2.1.1/bin:/Users/josh/code/bin'
-#   'flags': [
-#       '-S',                   'seeing_is_believing',
-#       '-Ku',
-#       '--alignment-strategy', 'line',
-#       '--number-of-captures', '200',
-#       '--result-length',      '200',
-#       '--alignment-strategy', 'chunk',
-#       '--timeout',            '12'
-#     ]
-
 # might be cool to use the -j option to split into a second or third pane
 # would be like:
 # if there are multiple panes open that SIB did not create
