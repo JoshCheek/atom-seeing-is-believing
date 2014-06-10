@@ -4,7 +4,7 @@ spawn = require('child_process').spawn
 # ADDED TO MY ~/.atom/config.cson
 # 'seeing-is-believing':
 #   'ruby-command': '/Users/josh/.rubies/ruby-2.1.1/bin/ruby'
-#   'new-env-vars':
+#   'add-t-env':
 #     'GEM_HOME'        : '/Users/josh/.gem/ruby/2.1.1',
 #     'GEM_PATH'        : '/Users/josh/.gem/ruby/2.1.1:/Users/josh/.rubies/ruby-2.1.1/lib/ruby/gems/2.1.0',
 #     'GEM_ROOT'        : '/Users/josh/.rubies/ruby-2.1.1/lib/ruby/gems/2.1.0',
@@ -72,7 +72,7 @@ module.exports =
 
   getVars: ->
     sibConfig     = atom.config.get('seeing-is-believing')
-    newEnvVars    = sibConfig['new-env-vars'] || {}
+    newEnvVars    = sibConfig['add-to-env']   || {}
     flags         = sibConfig['flags']        || []
     rubyCommand   = sibConfig['ruby-command'] || 'ruby'
 
