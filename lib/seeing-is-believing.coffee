@@ -43,7 +43,7 @@ module.exports =
   # These assume the active pane item is an editor
   activate: ->
     atom.workspaceView.command "seeing-is-believing:annotate-document",       => @annotateDocument()
-    # atom.workspaceView.command "seeing-is-believing:annotateMagicComments", => @annotate_magic_comments()
+    atom.workspaceView.command "seeing-is-believing:annotate-magic-comments", => @annotateMagicComments()
     # atom.workspaceView.command "seeing-is-believing:removeAnnotations",      => @remove_annotations()
 
 
@@ -98,8 +98,10 @@ module.exports =
   annotateDocument: ->
     this.invokeSib this.getVars()
 
-  annotateMagicCmments: ->
-    # -x,  --xmpfilter-style         # annotate marked lines instead of every line
+  annotateMagicComments: ->
+    vars = this.getVars()
+    vars.flags.push('--xmpfilter-style')
+    this.invokeSib vars
 
   removeAnnotations: ->
     # -c,  --clean                   # remove annotations from previous runs of seeing_is_believing
