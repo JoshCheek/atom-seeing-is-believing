@@ -1,16 +1,17 @@
 {
   "name": "seeing-is-believing",
   "main": "./lib/seeing-is-believing",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Runs your code, adding comments to each line, showing the inspection of what that line evaluates to.",
-  "activationEvents": ["seeing-is-believing:annotate-document",
-                       "seeing-is-believing:annotate-magic-comments",
-                       "seeing-is-believing:remove-annotations"],
+  "activationEvents": [
+    "seeing-is-believing:annotate-document",
+    "seeing-is-believing:annotate-magic-comments",
+    "seeing-is-believing:remove-annotations"
+  ],
   "repository": "https://github.com/JoshCheek/atom-seeing-is-believing",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
