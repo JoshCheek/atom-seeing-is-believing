@@ -9,7 +9,7 @@
     "seeing-is-believing:remove-annotations"
   ],
   "repository": "https://github.com/JoshCheek/atom-seeing-is-believing",
-  "license": "MIT",
+  "license": "WTFPL",
   "engines": {
     "atom": ">0.50.0"
   },
