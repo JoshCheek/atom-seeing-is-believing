@@ -5,18 +5,19 @@ allowing Ruby programs to show you the result of each line of code that was eval
 
 
 # Using the package
-Press `Command+Option+B` to annotate every line,
-`Command+Option+N` to annotate just marked lines
-(mark them by placing `# =>` after them, or below them),
-`Command+Option+V` to remove annotations
+
+* `Command+Option+B` to annotate every line
+* `Command+Option+N` to annotate just marked lines (mark them by placing `# =>` after them, or below them)
+* `Command+Option+V` to remove annotations
 
 
 # Install the Atom package
-Atom -> Preferences -> Packages
 
-Search for "seeing is believing"
+* Atom -> Preferences -> Packages
+* Search for "seeing is believing"
+* Click "install"
 
-Click "install"
+Or, you can do it from the command line `$ apm install seeing-is-believing`
 
 
 # You need [Seeing Is Believing](https://github.com/JoshCheek/seeing_is_believing) installed
@@ -29,8 +30,9 @@ by running `$ seeing_is_believing --version`
 # Configure to work with your environment
 
 This package does not know how to find your Ruby, you have to configure that yourself.
-You do this at the top level of your config directory (on my Mac, that's at `~/.atom/config.cson`).
-Define the following keys, changing them as appropriate for your environment,
+You do this in your config file (on my Mac, that's at `~/.atom/config.cson`).
+Add the following keys (just append this to the bottom of the file),
+changing them as appropriate for your environment,
 and according to your preferences.
 
 **Descriptions of the variables below.**
