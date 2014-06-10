@@ -43,7 +43,7 @@ module.exports =
   activate: ->
     atom.workspaceView.command "seeing-is-believing:annotate-document",       => @annotateDocument()
     atom.workspaceView.command "seeing-is-believing:annotate-magic-comments", => @annotateMagicComments()
-    # atom.workspaceView.command "seeing-is-believing:removeAnnotations",      => @remove_annotations()
+    atom.workspaceView.command "seeing-is-believing:remove-annotations",      => @removeAnnotations()
 
 
   invokeSib: (vars) ->
@@ -109,7 +109,9 @@ module.exports =
     this.invokeSib vars
 
   removeAnnotations: ->
-    # -c,  --clean                   # remove annotations from previous runs of seeing_is_believing
+    vars = this.getVars()
+    vars.flags.push('--clean')
+    this.invokeSib vars
 
   # apparently JS doesn't have hashes, hashes are objects
   # and it doesn't have a clone method, or a merge method

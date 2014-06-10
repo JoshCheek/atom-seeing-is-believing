@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "description": "A short description of your package",
   "activationEvents": ["seeing-is-believing:annotate-document",
-                       "seeing-is-believing:annotate-magic-comments"],
+                       "seeing-is-believing:annotate-magic-comments",
+                       "seeing-is-believing:remove-annotations"],
   "repository": "https://github.com/JoshCheek/atom-seeing_is_believing",
   "license": "MIT",
   "engines": {

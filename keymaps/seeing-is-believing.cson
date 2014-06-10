@@ -1,3 +1,4 @@
 '.editor':
   'cmd-alt-b': 'seeing-is-believing:annotate-document'
   'cmd-alt-n': 'seeing-is-believing:annotate-magic-comments'
+  'cmd-alt-v': 'seeing-is-believing:remove-annotations'
