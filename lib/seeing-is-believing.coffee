@@ -23,9 +23,10 @@ module.exports =
 
 
   invokeSib: (vars) ->
-    selection = vars.editor.selectAll()[0]
-    crntBody  = selection.getText()
-    newBody   = ""
+    selection     = vars.editor.selectAll()[0]
+    crntBody      = selection.getText()
+    newBody       = ""
+    capturedError = ""
 
     console.log("Invoking Seeing is believing with flags & env:", vars.flags, vars.env)
     sib = spawn(vars.rubyCommand,
@@ -36,11 +37,15 @@ module.exports =
       newBody += output
 
     sib.stderr.on 'data', (output) ->
+      capturedError += output
       console.log("Seeing is Believing stderr:" + output)
 
     sib.on 'close', (code) ->
       console.log("Seeing is Believing closed with code " + code)
-      selection.insertText(newBody)
+      if code == 2 # nondisplayable error
+        alert(capturedError)
+      else
+        selection.insertText(newBody)
 
     sib.stdin.write(crntBody)
     sib.stdin.end()
