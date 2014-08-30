@@ -38,10 +38,10 @@ module.exports =
 
     sib.stderr.on 'data', (output) ->
       capturedError += output
-      console.log("Seeing is Believing stderr:" + output)
+      console.error("Seeing is Believing stderr:" + output)
 
     sib.on 'close', (code) ->
-      console.log("Seeing is Believing closed with code " + code)
+      console.error("Seeing is Believing closed with code " + code)
       if code == 2 # nondisplayable error
         alert(capturedError)
       else
@@ -52,9 +52,9 @@ module.exports =
 
   getVars: ->
     sibConfig     = atom.config.get('seeing-is-believing')
-    newEnvVars    = sibConfig['add-to-env']   || {}
-    flags         = sibConfig['flags']        || []
-    rubyCommand   = sibConfig['ruby-command'] || 'ruby'
+    newEnvVars    = sibConfig['add-to-env']   ? {}
+    flags         = sibConfig['flags']        ? []
+    rubyCommand   = sibConfig['ruby-command'] ? 'ruby'
 
     editor        = atom.workspace.activePaneItem
     fileName      = editor.getPath()
@@ -65,7 +65,7 @@ module.exports =
     # add new path locations
     addToPath = newEnvVars.ADD_TO_PATH || ""
     delete newEnvVars.ADD_TO_PATH
-    env = this.merge process.env, newEnvVars
+    env = @merge process.env, newEnvVars
     if env.PATH
       env.PATH = addToPath + ":" + env.PATH
     else
@@ -82,12 +82,12 @@ module.exports =
     sibConfig
 
   annotateDocument: ->
-    this.invokeSib this.getVars()
+    @invokeSib @getVars()
 
   annotateMagicComments: ->
-    vars = this.getVars()
+    vars = @getVars()
     vars.flags.push('--xmpfilter-style')
-    this.invokeSib vars
+    @invokeSib vars
 
   removeAnnotations: ->
     vars = this.getVars()
