@@ -4,14 +4,14 @@ Integrates Atom with [Seeing Is Believing](https://github.com/JoshCheek/seeing_i
 allowing Ruby programs to show you the result of each line of code that was evaluated.
 
 
-# Using the package
+## Using the package
 
 * `Command+Option+B` to annotate every line
 * `Command+Option+N` to annotate just marked lines (mark them by placing `# =>` after them, or below them)
 * `Command+Option+V` to remove annotations
 
 
-# Install the Atom package
+## Install the Atom package
 
 * Atom -> Preferences -> Packages
 * Search for "seeing is believing"
@@ -20,14 +20,14 @@ allowing Ruby programs to show you the result of each line of code that was eval
 Or, you can do it from the command line `$ apm install seeing-is-believing`
 
 
-# You need [Seeing Is Believing](https://github.com/JoshCheek/seeing_is_believing) installed
+## You need [Seeing Is Believing](https://github.com/JoshCheek/seeing_is_believing) installed
 
 This integrates into your specific environment, it doesn't come with the gem loaded by default.
 Install it by getting into the environment you want, and running `$ gem install seeing_is_believing`
 If you're using rbenv, you'll need to `$ rbenv rehash` afterwards. You can check that it worked
 by running `$ seeing_is_believing --version`
 
-# Configure to work with your environment
+## Configure to work with your environment
 
 This package does not know how to find your Ruby,
 or what settings you want to use.
@@ -56,8 +56,7 @@ and according to your preferences.
   ]
 ```
 
-ruby-command
-------------
+### ruby-command
 
 `ruby-command` is the location of the ruby program you want to run.
 
@@ -75,8 +74,7 @@ or you can make your own wrapper like [this](https://github.com/JoshCheek/dotfil
 and then set it to the path to that wrapper.
 
 
-add-to-env
-----------
+### add-to-env
 
 Here, you can specify environment variables.
 
@@ -92,8 +90,7 @@ look in your current environment to see what they should be.
 that worked for me.
 
 
-modifying the path
-------------------
+### modifying the path
 To add paths, use the environment variable `ADD_TO_PATH` (this will go in `add-to-env` key)
 
 **rvm** you should be fine
@@ -106,8 +103,7 @@ You can look at [my example](https://github.com/JoshCheek/atom-seeing-is-believi
 to see what I wound up adding.
 
 
-flags
------
+### flags
 
 You can get a full list of flags by running `seeing_is_believing --help`
 The most common and useful ones are going to be:
@@ -120,16 +116,14 @@ The most common and useful ones are going to be:
 * '--timeout' (say you accidentally have an infinite loop... don't want to wait around forever!)
 
 
-Troubleshooting
----------------
+## Troubleshooting
 
 * Do you have the gem installed in the correct environment? (load your env in whatever way you do that, and then `gem which seeing_is_believing`)
 * Do you have the package installed? (Command+Shift+P and start typing "seeing", you should see the commands and be able to run them from there)
 * What do the logs say? (use Command+Option+I to run the console, the package will print some debugging information you can look at)
 * Did Atom get really messed up after you installed this? Probably the `~/.atom/config.cson` has a syntax error or something, which will mess up all the configuration, not just Seeing Is Believing's
 
-<a href="http://www.wtfpl.net/"><img src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl.svg" height="20" alt="WTFPL" /></a> License
--------
+## <a href="http://www.wtfpl.net/"><img src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl.svg" height="20" alt="WTFPL" /></a> License
 
     Copyright (C) 2014 Josh Cheek <josh.cheek@gmail.com>
 
