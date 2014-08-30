@@ -44,10 +44,9 @@ and according to your preferences.
     "RBENV_VERSION": "2.0.0-p0"
   'flags': [
       '-Ku',
-      '--alignment-strategy', 'line',
-      '--number-of-captures', '200',
-      '--result-length',      '200',
       '--alignment-strategy', 'chunk',
+      '--number-of-captures', '200',
+      '--line-length',        '250',
       '--timeout',            '12'
     ]
 ```
