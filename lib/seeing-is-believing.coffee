@@ -17,10 +17,10 @@ spawn = require('child_process').spawn
 module.exports =
   # These assume the active pane item is an editor
   activate: ->
-    atom.workspaceView.command "seeing-is-believing:annotate-document",       => @annotateDocument()
-    atom.workspaceView.command "seeing-is-believing:annotate-magic-comments", => @annotateMagicComments()
-    atom.workspaceView.command "seeing-is-believing:remove-annotations",      => @removeAnnotations()
-    atom.config.setDefaults "seeing-is-believing",
+    atom.workspaceView.command 'seeing-is-believing:annotate-document',       => @annotateDocument()
+    atom.workspaceView.command 'seeing-is-believing:annotate-magic-comments', => @annotateMagicComments()
+    atom.workspaceView.command 'seeing-is-believing:remove-annotations',      => @removeAnnotations()
+    atom.config.setDefaults 'seeing-is-believing',
       'ruby-command': 'ruby'
       'flags': [
         '--alignment-strategy', 'chunk',
@@ -36,20 +36,20 @@ module.exports =
     newBody       = ""
     capturedError = ""
 
-    console.log("Seeing is Believing:")
-    console.log("  command: " + vars.rubyCommand + " " + args.join(" "))
-    console.log("  env:     ",  vars.env)
-    sib = spawn(vars.rubyCommand, args, {"env": vars.env})
+    console.log('Seeing is Believing:')
+    console.log('  command: ' + vars.rubyCommand + ' ' + args.join(' '))
+    console.log('  env:     ',  vars.env)
+    sib = spawn(vars.rubyCommand, args, {'env': vars.env})
 
     sib.stdout.on 'data', (output) ->
       newBody += output
 
     sib.stderr.on 'data', (output) ->
       capturedError += output
-      console.error("Seeing is Believing stderr:" + output)
+      console.error('Seeing is Believing stderr:' + output)
 
     sib.on 'close', (code) ->
-      console.log("Seeing is Believing closed with code " + code)
+      console.log('Seeing is Believing closed with code ' + code)
       if capturedError.contains('LoadError')
         alert("It looks like the Seeing is Believing gem hasn't been installed, run\n`gem install seeing is believing`\nto do so, then make sure it worked with\n`seeing_is_believing --version`\n\nIf it should be installed, check logs to see what was executed\n(Option+Command+I)")
       else if code == 2 # nondisplayable error
@@ -71,14 +71,14 @@ module.exports =
     fileName      = editor.getPath()
 
     # if file is saved, run as that file (otherwise uses a tempfile)
-    flags.push("--as", fileName) if fileName
+    flags.push('--as', fileName) if fileName
 
     # add new path locations
     addToPath = newEnvVars.ADD_TO_PATH || ""
     delete newEnvVars.ADD_TO_PATH
     env = @merge process.env, newEnvVars
     if env.PATH
-      env.PATH = addToPath + ":" + env.PATH
+      env.PATH = addToPath + ':' + env.PATH
     else
       env.PATH = addToPATH
 
