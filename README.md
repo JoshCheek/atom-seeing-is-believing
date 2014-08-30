@@ -29,8 +29,13 @@ by running `$ seeing_is_believing --version`
 
 # Configure to work with your environment
 
-This package does not know how to find your Ruby, you have to configure that yourself.
-You do this in your config file (on my Mac, that's at `~/.atom/config.cson`).
+This package does not know how to find your Ruby,
+or what settings you want to use.
+It uses somewhat intelligent defaults,
+**but these will only work if you launch atom from the console**
+(this is because it will then inherit your environment variables)
+To customize it to always work, edit your config file
+(on my Mac, that's at `~/.atom/config.cson`).
 Add the following keys (just append this to the bottom of the file),
 changing them as appropriate for your environment,
 and according to your preferences.
@@ -39,16 +44,16 @@ and according to your preferences.
 
 ```coffeescript
 'seeing-is-believing':
-  'ruby-command': '/Users/josh/.rbenv/shims/ruby'
+  'ruby-command': 'path/to/your/ruby'
   'add-to-env':
-    "RBENV_VERSION": "2.0.0-p0"
+    "SOME_KEY":    "SOME_VALUE"
+    "ADD_TO_PATH": "dir1:dir2"
   'flags': [
-      '-Ku',
       '--alignment-strategy', 'chunk',
       '--number-of-captures', '200',
       '--line-length',        '250',
       '--timeout',            '12'
-    ]
+  ]
 ```
 
 ruby-command
@@ -62,8 +67,12 @@ what versions you have available, then `$ rvm wrapper YOUR_VERSION sib`, e.g.
 `$ rvm wrapper ruby-2.0.0-p481 sib`. Now, set your `ruby-command` to
 whatever `$ which sib_ruby` tells you.
 
-**rbenv and chruby** set it to whatever `$ which ruby` tells you
+**rbenv** set it to whatever `$ which ruby` tells you
 
+**chruby** You can set it to whatever `$ which ruby` tells you,
+and then set environment variables as described below,
+or you can make your own wrapper like [this](https://github.com/JoshCheek/dotfiles/blob/c307d7c0af66c616281c82b48f0f28d3ea190a40/bin/sib_ruby),
+and then set it to the path to that wrapper.
 
 
 add-to-env
@@ -73,10 +82,11 @@ Here, you can specify environment variables.
 
 **rvm** If you used the wrapper approach above, then you don't need any environment variables.
 
-**rbenv** You need to set `RBENV_VERSION`, you can see what your it should be with
-`env | grep RBENV_VERSION`.
+**rbenv** You need to set `RBENV_VERSION`,
+you can see what your it should be with `$ env | grep RBENV_VERSION`.
 
-**chruby** Chruby requires a lot of variables,
+**chruby** If you made your own wrapper above, you don't need to do anything here.
+Otherwise, chruby requires a lot of variables,
 look in your current environment to see what they should be.
 [Here is an example](https://github.com/JoshCheek/atom-seeing-is-believing/blob/d271293ee62deb3f7748ce2fa5343b1efc4a50de/lib/seeing-is-believing.coffee#L54-65)
 that worked for me.
@@ -90,15 +100,24 @@ To add paths, use the environment variable `ADD_TO_PATH` (this will go in `add-t
 
 **rbenv** You might need to set it to `/Users/YOUR_USERNAME/.rbenv/shims` I'm not sure.
 
-**chruby** run `env | grep PATH` and set it to whatever you think was added by chruby.
+**chruby** If you used the wrapper above, you don't need to do anything here.
+Otherwise, run `env | grep PATH` and set it to whatever you think was added by chruby.
 You can look at [my example](https://github.com/JoshCheek/atom-seeing-is-believing/blob/d271293ee62deb3f7748ce2fa5343b1efc4a50de/lib/seeing-is-believing.coffee#L54-65)
-to see what I wound up adding:
+to see what I wound up adding.
 
 
 flags
 -----
 
 You can get a full list of flags by running `seeing_is_believing --help`
+The most common and useful ones are going to be:
+
+* "--alignment-strategy" (I recommend "chunk")
+* "--number-of-captures" (say you have a line that executes in a loop, 1 million times,
+  you don't want to record all 1 million of those invocations, because it's too much information,
+  it would eat up your memory, maybe start paging, and just generally take a really long time to execute)
+* '--line-length' (how much output to show, use this to keep it from affecting editor performance or getting too spammy)
+* '--timeout' (say you accidentally have an infinite loop... don't want to wait around forever!)
 
 
 Troubleshooting
@@ -107,21 +126,16 @@ Troubleshooting
 * Do you have the gem installed in the correct environment? (load your env in whatever way you do that, and then `gem which seeing_is_believing`)
 * Do you have the package installed? (Command+Shift+P and start typing "seeing", you should see the commands and be able to run them from there)
 * What do the logs say? (use Command+Option+I to run the console, the package will print some debugging information you can look at)
+* Did Atom get really messed up after you installed this? Probably the `~/.atom/config.cson` has a syntax error or something, which will mess up all the configuration, not just Seeing Is Believing's
 
-# LICENSE
+<a href="http://www.wtfpl.net/"><img src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl.svg" height="20" alt="WTFPL" /></a> License
+-------
 
-```
-       DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-                   Version 2, December 2004
+    Copyright (C) 2014 Josh Cheek <josh.cheek@gmail.com>
 
-Copyright (C) 2014 Josh Cheek <josh.cheek@gmail.com>
-
-Everyone is permitted to copy and distribute verbatim or modified
-copies of this license document, and changing it is allowed as long
-as the name is changed.
-
-           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
-
- 0. You just DO WHAT THE FUCK YOU WANT TO.
-```
+    This program is free software. It comes without any warranty,
+    to the extent permitted by applicable law.
+    You can redistribute it and/or modify it under the terms of the
+    Do What The Fuck You Want To Public License,
+    Version 2, as published by Sam Hocevar.
+    See http://www.wtfpl.net/ for more details.
