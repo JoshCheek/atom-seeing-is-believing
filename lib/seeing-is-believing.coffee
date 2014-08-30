@@ -94,32 +94,10 @@ module.exports =
     vars.flags.push('--clean')
     this.invokeSib vars
 
-  # apparently JS doesn't have hashes, hashes are objects
-  # and it doesn't have a clone method, or a merge method
-  # so you have to write your own...
-  #
-  # But you don't even get iterators to work with (I saw some people use forEach
-  # but it was not available)
-  #
-  # and you have to check each key to see if it is data or metadata
-  # because otherwise you'll merge things like constructors and stuff
-  # instead of just the "hash keys"
-  #
-  # How does everyone not have to write this code every time they want to add
-  # a variable to the environment for just a single shelling-out?
-  #
-  # ...what a horrible language
   merge: (leftObj, rightObj) ->
     mergedObj = {}
-    this.copyKeys(mergedObj, leftObj)
-    this.copyKeys(mergedObj, rightObj)
+    for key, value of leftObj
+      mergedObj[key] = value
+    for key, value of rightObj
+      mergedObj[key] = value
     mergedObj
-
-  copyKeys: (target, source) ->
-    keyIndex = 0
-    keys     = Object.keys(source)
-    while keyIndex < keys.length
-      key = keys[keyIndex]
-      if source.hasOwnProperty(key)
-        target[key] = source[key]
-      keyIndex += 1
