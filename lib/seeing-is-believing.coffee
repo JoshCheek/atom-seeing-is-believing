@@ -36,7 +36,7 @@ module.exports =
     newBody       = ""
     capturedError = ""
 
-    console.log("Invoking Seeing is believing:")
+    console.log("Seeing is Believing:")
     console.log("  command: " + vars.rubyCommand + " " + args.join(" "))
     console.log("  env:     ",  vars.env)
     sib = spawn(vars.rubyCommand, args, {"env": vars.env})
@@ -50,7 +50,9 @@ module.exports =
 
     sib.on 'close', (code) ->
       console.log("Seeing is Believing closed with code " + code)
-      if code == 2 # nondisplayable error
+      if capturedError.contains('LoadError')
+        alert("It looks like the Seeing is Believing gem hasn't been installed, run\n`gem install seeing is believing`\nto do so, then make sure it worked with\n`seeing_is_believing --version`\n\nIf it should be installed, check logs to see what was executed\n(Option+Command+I)")
+      else if code == 2 # nondisplayable error
         alert(capturedError)
       else
         selection.insertText(newBody)
