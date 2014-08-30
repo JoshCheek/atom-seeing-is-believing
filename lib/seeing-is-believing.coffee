@@ -20,7 +20,14 @@ module.exports =
     atom.workspaceView.command "seeing-is-believing:annotate-document",       => @annotateDocument()
     atom.workspaceView.command "seeing-is-believing:annotate-magic-comments", => @annotateMagicComments()
     atom.workspaceView.command "seeing-is-believing:remove-annotations",      => @removeAnnotations()
-
+    atom.config.setDefaults "seeing-is-believing",
+      'ruby-command': 'ruby'
+      'flags': [
+        '--alignment-strategy', 'chunk',
+        '--number-of-captures', '200',
+        '--line-length',        '250',
+        '--timeout',            '12'
+      ]
 
   invokeSib: (vars) ->
     selection     = vars.editor.selectAll()[0]
