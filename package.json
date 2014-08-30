@@ -1,7 +1,7 @@
 {
   "name": "seeing-is-believing",
   "main": "./lib/seeing-is-believing",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Runs your code, adding comments to each line, showing the inspection of what that line evaluates to.",
   "activationEvents": [
     "seeing-is-believing:annotate-document",
