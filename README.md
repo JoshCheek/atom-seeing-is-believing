@@ -27,14 +27,16 @@ Install it by getting into the environment you want, and running `$ gem install 
 If you're using rbenv, you'll need to `$ rbenv rehash` afterwards. You can check that it worked
 by running `$ seeing_is_believing --version`
 
-## Configure to work with your environment
+## Using the default configuration
 
-This package does not know how to find your Ruby,
-or what settings you want to use.
-It uses somewhat intelligent defaults,
-**but these will only work if you launch atom from the console**
+This package uses somewhat intelligent defaults,
+but in reality, it does not know how to find your Ruby, or what settings you want to use.
+**The defaults will only work if you launch atom from the console**
 (this is because it will then inherit your environment variables)
-To customize it to always work, edit your config file
+
+## Custom configuration
+
+To customize it to always work, regardless of how you start Atom, edit your config file
 (on my Mac, that's at `~/.atom/config.cson`).
 Add the following keys (just append this to the bottom of the file),
 changing them as appropriate for your environment,
