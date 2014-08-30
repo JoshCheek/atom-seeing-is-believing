@@ -54,6 +54,7 @@ module.exports =
         alert(capturedError)
       else
         selection.insertText(newBody)
+        vars.afterChange()
 
     sib.stdin.write(crntBody)
     sib.stdin.end()
@@ -86,7 +87,10 @@ module.exports =
     sibConfig.env         = env
     sibConfig.flags       = flags
     sibConfig.editor      = editor
+    sibConfig.cursor      = editor.getCursorScreenPosition()
     sibConfig.rubyCommand = rubyCommand
+    sibConfig.afterChange = ->
+      editor.setCursorScreenPosition sibConfig.cursor
     sibConfig
 
   annotateDocument: ->
@@ -98,9 +102,9 @@ module.exports =
     @invokeSib vars
 
   removeAnnotations: ->
-    vars = this.getVars()
+    vars = @getVars()
     vars.flags.push('--clean')
-    this.invokeSib vars
+    @invokeSib vars
 
   merge: (leftObj, rightObj) ->
     mergedObj = {}
