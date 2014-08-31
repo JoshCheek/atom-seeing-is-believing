@@ -5,7 +5,7 @@ allowing Ruby programs to show you the result of each line of code that was eval
 
 Here is an example session:
 
-![example](https://github.com/JoshCheek/seeing_is_believing/blob/2fbb49bfee1569cedaa260815d5b3098a2da64a9/docs/example.gif)
+![example](https://s3.amazonaws.com/josh.cheek/images/scratch/sib-example1.gif)
 
 [Here](https://vimeo.com/73866851) is a longer video that goes into more details.
 
