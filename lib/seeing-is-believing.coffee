@@ -15,19 +15,21 @@ spawn = require('child_process').spawn
 #     close the stdout / stderr panes if they are open
 
 module.exports =
-  # These assume the active pane item is an editor
+  # These assume the active pane item is an editor <-- is there some way to guard agains this being untrue? e.g. check its class or methods
   activate: ->
     atom.workspaceView.command 'seeing-is-believing:annotate-document',       => @annotateDocument()
     atom.workspaceView.command 'seeing-is-believing:annotate-magic-comments', => @annotateMagicComments()
     atom.workspaceView.command 'seeing-is-believing:remove-annotations',      => @removeAnnotations()
-    atom.config.setDefaults 'seeing-is-believing',
-      'ruby-command': 'ruby'
-      'flags': [
-        '--alignment-strategy', 'chunk',
-        '--number-of-captures', '200',
-        '--line-length',        '250',
-        '--timeout',            '12'
-      ]
+  configDefaults:
+    'ruby-command':  'ruby'
+    'add-to-env':
+      'ADD_TO_PATH': ''
+    'flags': [
+      '--alignment-strategy', 'chunk',
+      '--number-of-captures', '300',
+      '--line-length',        '1000',
+      '--timeout',            '12'
+    ]
 
   invokeSib: (vars) ->
     editor        = vars.editor
