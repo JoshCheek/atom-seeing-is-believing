@@ -3,6 +3,11 @@
 Integrates Atom with [Seeing Is Believing](https://github.com/JoshCheek/seeing_is_believing),
 allowing Ruby programs to show you the result of each line of code that was evaluated.
 
+Here is an example session:
+
+![example](https://github.com/JoshCheek/seeing_is_believing/blob/2fbb49bfee1569cedaa260815d5b3098a2da64a9/docs/example.gif)
+
+[Here](https://vimeo.com/73866851) is a longer video that goes into more details.
 
 ## Using the package
 
