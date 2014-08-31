@@ -11,9 +11,18 @@ Here is an example session:
 
 ## Using the package
 
+Keybindings:
+
 * `Command+Option+B` to annotate every line
 * `Command+Option+N` to annotate just marked lines (mark them by placing `# =>` after them, or below them)
 * `Command+Option+V` to remove annotations
+
+Snippets (use SiB to play around with ideas without needing a complex environment):
+
+* `s_arb` in-memory ActiveRecord::Base code, so you can play with models without Rails.
+* `s_sinatra` Example Sinatra app with Rack-style invocation setup for you to play with.
+* `s_nokogiri` Parse html, play with css selectors, etc.
+* `s_reflection` Examples of useful reflection tools.
 
 
 ## Install the Atom package
@@ -57,8 +66,8 @@ and according to your preferences.
     "ADD_TO_PATH": "dir1:dir2"
   'flags': [
       '--alignment-strategy', 'chunk',
-      '--number-of-captures', '200',
-      '--line-length',        '250',
+      '--number-of-captures', '300',
+      '--line-length',        '1000',
       '--timeout',            '12'
   ]
 ```
@@ -95,6 +104,10 @@ Otherwise, chruby requires a lot of variables,
 look in your current environment to see what they should be.
 [Here is an example](https://github.com/JoshCheek/atom-seeing-is-believing/blob/d271293ee62deb3f7748ce2fa5343b1efc4a50de/lib/seeing-is-believing.coffee#L54-65)
 that worked for me.
+It might also be worth setting your SHELL environment variable
+to bash, otherwise [this](https://github.com/postmodern/chruby/blob/dadcdba85e50fd2b62930d6bb7835972873f879b/bin/chruby-exec#L36)
+could fuck up (e.g. I set mine to fish for other packages that actually launch a shell,
+which causes, this to happen).
 
 
 ### modifying the path
