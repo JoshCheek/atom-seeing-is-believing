@@ -115,8 +115,10 @@ module.exports =
     mergedObj
 
   withoutMovingScreenOrCursor: (editor, f) ->
-    cursor    = editor.getCursorScreenPosition()
-    scrollTop = editor.displayBuffer.getScrollTop()
+    cursor        = editor.getCursorScreenPosition()
+    scrollTop     = editor.displayBuffer.getScrollTop()
+    scrollLeft    = editor.displayBuffer.getScrollLeft()
     f()
+    editor.displayBuffer.setScrollLeft(scrollLeft)
     editor.displayBuffer.setScrollTop(scrollTop)
     editor.setCursorScreenPosition cursor
