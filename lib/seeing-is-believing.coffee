@@ -57,7 +57,7 @@ module.exports =
       else if code == 2 # nondisplayable error
         alert(capturedError)
       else
-        @withoutMovingScreenOrCursor editor, => editor.setText(newBody)
+        @withoutMovingScreenOrCursor editor, => editor.setText(newBody + capturedError)
 
     sib.stdin.write(crntBody)
     sib.stdin.end()
