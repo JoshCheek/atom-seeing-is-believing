@@ -30,8 +30,8 @@ module.exports =
       ]
 
   invokeSib: (vars) ->
-    selection     = vars.editor.selectAll()[0]
-    crntBody      = selection.getText()
+    editor        = vars.editor
+    crntBody      = editor.getText()
     args          = ['-S', 'seeing_is_believing'].concat(vars.flags)
     newBody       = ""
     capturedError = ""
@@ -41,22 +41,21 @@ module.exports =
     console.log('  env:     ',  vars.env)
     sib = spawn(vars.rubyCommand, args, {'env': vars.env})
 
-    sib.stdout.on 'data', (output) ->
+    sib.stdout.on 'data', (output) =>
       newBody += output
 
-    sib.stderr.on 'data', (output) ->
+    sib.stderr.on 'data', (output) =>
       capturedError += output
       console.error('Seeing is Believing stderr:' + output)
 
-    sib.on 'close', (code) ->
+    sib.on 'close', (code) =>
       console.log('Seeing is Believing closed with code ' + code)
       if capturedError.contains('LoadError')
         alert("It looks like the Seeing is Believing gem hasn't been installed, run\n`gem install seeing is believing`\nto do so, then make sure it worked with\n`seeing_is_believing --version`\n\nIf it should be installed, check logs to see what was executed\n(Option+Command+I)")
       else if code == 2 # nondisplayable error
         alert(capturedError)
       else
-        selection.insertText(newBody)
-        vars.afterChange()
+        @withoutMovingScreenOrCursor editor, => editor.setText(newBody)
 
     sib.stdin.write(crntBody)
     sib.stdin.end()
@@ -89,10 +88,7 @@ module.exports =
     sibConfig.env         = env
     sibConfig.flags       = flags
     sibConfig.editor      = editor
-    sibConfig.cursor      = editor.getCursorScreenPosition()
     sibConfig.rubyCommand = rubyCommand
-    sibConfig.afterChange = ->
-      editor.setCursorScreenPosition sibConfig.cursor
     sibConfig
 
   annotateDocument: ->
@@ -108,6 +104,8 @@ module.exports =
     vars.flags.push('--clean')
     @invokeSib vars
 
+  # helpers
+
   merge: (leftObj, rightObj) ->
     mergedObj = {}
     for key, value of leftObj
@@ -115,3 +113,10 @@ module.exports =
     for key, value of rightObj
       mergedObj[key] = value
     mergedObj
+
+  withoutMovingScreenOrCursor: (editor, f) ->
+    cursor    = editor.getCursorScreenPosition()
+    scrollTop = editor.displayBuffer.getScrollTop()
+    f()
+    editor.displayBuffer.setScrollTop(scrollTop)
+    editor.setCursorScreenPosition cursor
