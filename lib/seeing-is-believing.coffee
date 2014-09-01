@@ -63,35 +63,42 @@ module.exports =
     sib.stdin.end()
 
   getVars: ->
-    sibConfig     = atom.config.get('seeing-is-believing')
-    newEnvVars    = sibConfig['add-to-env']   ? {}
-    flags         = sibConfig['flags']        ? []
-    rubyCommand   = sibConfig['ruby-command'] ? 'ruby'
+    sibConfig       = atom.config.get('seeing-is-believing')
 
-    editor        = atom.workspace.activePaneItem
-    fileName      = editor.getPath()
+    # copy env vars
+    newEnvVars      = {}
+    oldEnvVars      = sibConfig['add-to-env']   ? {}
+    newEnvVars[key] = oldEnvVars[key] for key of oldEnvVars
+
+    # copy flags
+    oldFlags        = sibConfig['flags']        ? []
+    newFlags        = (flag for flag in oldFlags)
+
+    # other useful objs
+    rubyCommand     = sibConfig['ruby-command'] ? 'ruby'
+    editor          = atom.workspace.activePaneItem
+    fileName        = editor.getPath()
 
     # if file is saved, run as that file (otherwise uses a tempfile)
-    flags.push('--as', fileName) if fileName
+    newFlags.push('--as', fileName) if fileName
 
     # add new path locations
     addToPath = newEnvVars.ADD_TO_PATH || ""
     delete newEnvVars.ADD_TO_PATH
-    env = @merge process.env, newEnvVars
-    if env.PATH
-      env.PATH = addToPath + ':' + env.PATH
+    newEnv = @merge process.env, newEnvVars
+    if newEnv.PATH
+      newEnv.PATH = addToPath + ':' + newEnv.PATH
     else
-      env.PATH = addToPATH
+      newEnv.PATH = addToPATH
 
     # add shebang
-    if flags.indexOf('--shebang') != -1
-      flags.push '--shebang', rubyCommand
+    if newFlags.indexOf('--shebang') != -1
+      newFlags.push '--shebang', rubyCommand
 
-    sibConfig.env         = env
-    sibConfig.flags       = flags
-    sibConfig.editor      = editor
-    sibConfig.rubyCommand = rubyCommand
-    sibConfig
+    "env":         newEnv,
+    "flags":       newFlags,
+    "editor":      editor,
+    "rubyCommand": rubyCommand
 
   annotateDocument: ->
     @invokeSib @getVars()
