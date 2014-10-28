@@ -103,6 +103,9 @@ Here, you can specify environment variables.
 
 **rbenv** You need to set `RBENV_VERSION`,
 you can see what your it should be with `$ env | grep RBENV_VERSION`.
+If you don't have anything there, you can do `$ rbenv versions` to see a list of possibilities
+(remember, you need SiB installed for that Ruby). I recently set the value to `2.1.1` for someone,
+and set their `ruby-command` to `/Users/username/.rbenv/shims/ruby`, which worked correctly.
 
 **chruby** If you made your own wrapper above, you don't need to do anything here.
 Otherwise, chruby requires a lot of variables,
