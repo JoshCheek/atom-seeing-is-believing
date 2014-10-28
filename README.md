@@ -52,11 +52,16 @@ but in reality, it does not know how to find your Ruby, or what settings you wan
 
 To customize it to always work, regardless of how you start Atom, edit your config file
 (on my Mac, that's at `~/.atom/config.cson`).
-Add the following keys (just append this to the bottom of the file),
+Add the following keys (as of 0.138.0, they go under 'global', before that,
+you can just append this to the bottom of the file),
 changing them as appropriate for your environment,
 and according to your preferences.
 
-**Descriptions of the variables below.**
+[**Here is what my configuration looks like**](https://gist.github.com/JoshCheek/ff2a4e82587b68f3b190)
+
+**Here are the configuraiton options you can set**
+
+Descriptions of the variables are below.
 
 ```coffeescript
 'seeing-is-believing':
