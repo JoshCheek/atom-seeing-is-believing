@@ -1,6 +1,9 @@
 # http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
 spawn = require('child_process').spawn
 
+# https://github.com/JoshCheek/atom-seeing-is-believing/issues/8
+defaultLang = 'en_US.UTF-8'
+
 # might be cool to use the -j option to split into a second or third pane
 # would be like:
 # if there are multiple panes open that SIB did not create
@@ -23,6 +26,7 @@ module.exports =
   configDefaults:
     'ruby-command':  'ruby'
     'add-to-env':
+      'LANG':        defaultLang
       'ADD_TO_PATH': ''
     'flags': [
       '--alignment-strategy', 'chunk',
@@ -67,11 +71,11 @@ module.exports =
 
     # copy env vars
     newEnvVars      = {}
-    oldEnvVars      = sibConfig['add-to-env']   ? {}
+    oldEnvVars      = sibConfig['add-to-env'] ? {}
     newEnvVars[key] = oldEnvVars[key] for key of oldEnvVars
 
     # copy flags
-    oldFlags        = sibConfig['flags']        ? []
+    oldFlags        = sibConfig['flags'] ? []
     newFlags        = (flag for flag in oldFlags)
 
     # other useful objs
@@ -90,6 +94,11 @@ module.exports =
       newEnv.PATH = addToPath + ':' + newEnv.PATH
     else
       newEnv.PATH = addToPATH
+
+    # Ensure LANG env var is set (https://github.com/JoshCheek/atom-seeing-is-believing/issues/8)
+    # the defaults above won't work if the user overrides add-to-env in their config
+    # (it overrides the hash instead of merging)
+    newEnv.LANG ||= defaultLang
 
     # add shebang
     if newFlags.indexOf('--shebang') != -1
