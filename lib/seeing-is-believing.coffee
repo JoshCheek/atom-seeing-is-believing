@@ -18,22 +18,51 @@ defaultLang = 'en_US.UTF-8'
 #     close the stdout / stderr panes if they are open
 
 module.exports =
+  # Convig vars are at https://github.com/JoshCheek/seeing_is_believing/blob/4200822e9cef765caa3e30cfe87c21257c46939b/lib/seeing_is_believing/binary/config.rb#L276-301
+  # Note that these are v3, I'm keeping --number-of-captures for now,
+  # because it will work with both SiB 2 and SiB 3, even though it's now deprecated
+  # in favour of --max-line-captures
+  config:
+    'ruby-command':
+      title:       'Ruby Executable'
+      description: 'By default, we find Ruby by looking in the PATH. But path is not consistently correct (e.g. launching from shell vs double clicking icon). So you can specify the Ruby here. e.g. "/Users/josh/.rubies/ruby-2.1.1/bin/ruby"'
+      type:        'string'
+      default:     'ruby'
+    'add-to-env':
+      title:       'Additional environment variables'
+      description: 'Set any environment variables you need (e.g. if your executable is ~/.rbenv/shims/ruby then you might also need to set the variable "RBENV_VERSION" to "2.2.0-p0"'
+      type:        'object'
+      required:   ['ADD_TO_PATH', 'LANG']
+      properties:
+        ADD_TO_PATH:
+          title:       'Directories to prepend to the PATH'
+          description: 'In the format /path/to/dir1:/path/to/dir2'
+          type:        'string'
+          default:     ''
+        LANG:
+          title:       'LANG'
+          description: 'Encodings >.< see https://github.com/JoshCheek/atom-seeing-is-believing/issues/8 if you need to know more.'
+          type:        'string'
+          default:     'en_US.UTF-8'
+      additionalProperties:
+        type:          'string'
+    flags:
+      description: 'You can get a list by running `seeing_is_believing --help` from the shell'
+      type:        'array'
+      items:
+        type: 'string'
+      default: ['--alignment-strategy', 'chunk',
+                '--number-of-captures', '300',
+                '--line-length',        '1000',
+                '--timeout',            '12'
+               ]
+
   # These assume the active pane item is an editor <-- is there some way to guard agains this being untrue? e.g. check its class or methods
   activate: ->
     atom.workspaceView.command 'seeing-is-believing:annotate-document',       => @annotateDocument()
     atom.workspaceView.command 'seeing-is-believing:annotate-magic-comments', => @annotateMagicComments()
     atom.workspaceView.command 'seeing-is-believing:remove-annotations',      => @removeAnnotations()
-  configDefaults:
-    'ruby-command':  'ruby'
-    'add-to-env':
-      'LANG':        defaultLang
-      'ADD_TO_PATH': ''
-    'flags': [
-      '--alignment-strategy', 'chunk',
-      '--number-of-captures', '300',
-      '--line-length',        '1000',
-      '--timeout',            '12'
-    ]
+
 
   invokeSib: (vars) ->
     editor        = vars.editor
@@ -67,7 +96,7 @@ module.exports =
     sib.stdin.end()
 
   getVars: ->
-    sibConfig       = atom.config.get('seeing-is-believing')
+    sibConfig       = atom.config.get('seeing-is-believing') ? {}
 
     # copy env vars
     newEnvVars      = {}
