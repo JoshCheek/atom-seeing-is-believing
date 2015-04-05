@@ -20,9 +20,10 @@ defaultLang = 'en_US.UTF-8'
 module.exports =
   # These assume the active pane item is an editor <-- is there some way to guard agains this being untrue? e.g. check its class or methods
   activate: ->
-    atom.workspaceView.command 'seeing-is-believing:annotate-document',       => @annotateDocument()
-    atom.workspaceView.command 'seeing-is-believing:annotate-magic-comments', => @annotateMagicComments()
-    atom.workspaceView.command 'seeing-is-believing:remove-annotations',      => @removeAnnotations()
+    atom.commands.add 'atom-workspace', 'seeing-is-believing:annotate-document',       => @annotateDocument()
+    atom.commands.add 'atom-workspace', 'seeing-is-believing:annotate-magic-comments', => @annotateMagicComments()
+    atom.commands.add 'atom-workspace', 'seeing-is-believing:remove-annotations',      => @removeAnnotations()
+
   configDefaults:
     'ruby-command':  'ruby'
     'add-to-env':
