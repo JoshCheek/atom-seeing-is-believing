@@ -22,7 +22,6 @@ defaultLang = 'en_US.UTF-8'
 #     close the stdout / stderr panes if they are open
 
 module.exports = SeeingIsBelieving =
-  # These assume the active pane item is an editor <-- is there some way to guard agains this being untrue? e.g. check its class or methods
   activate: ->
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.commands.add 'atom-workspace',
@@ -125,18 +124,31 @@ module.exports = SeeingIsBelieving =
     "editor":      editor,
     "rubyCommand": rubyCommand
 
+  inEditor: ->
+    # can't figure out a good way to ask it what it is, so just asking if I can do all the stuff I want with it
+    editor = atom.workspace.getActivePaneItem()
+    editor?                           &&
+      editor.displayBuffer?           &&
+      editor.getText?                 &&
+      editor.setText?                 &&
+      editor.getPath?                 &&
+      editor.getCursorScreenPosition? &&
+      editor.setCursorScreenPosition?
+
   annotateDocument: ->
-    @invokeSib @getVars()
+    @invokeSib @getVars() if @inEditor?()
 
   annotateMagicComments: ->
-    vars = @getVars()
-    vars.flags.push('--xmpfilter-style')
-    @invokeSib vars
+    if @inEditor?()
+      vars = @getVars()
+      vars.flags.push('--xmpfilter-style')
+      @invokeSib vars
 
   removeAnnotations: ->
-    vars = @getVars()
-    vars.flags.push('--clean')
-    @invokeSib vars
+    if @inEditor?()
+      vars = @getVars()
+      vars.flags.push('--clean')
+      @invokeSib vars
 
   # helpers
 
