@@ -1,12 +1,12 @@
 {
   "name": "seeing-is-believing",
   "main": "./lib/seeing-is-believing",
-  "version": "1.4.2",
+  "version": "1.5.2",
   "description": "Runs your code, adding comments to each line, showing the inspection of what that line evaluates to.",
   "repository": "https://github.com/JoshCheek/atom-seeing-is-believing",
   "license": "WTFPL",
   "engines": {
-    "atom": ">0.50.0"
+    "atom": ">0.176.0"
   },
   "dependencies": {}
 }
