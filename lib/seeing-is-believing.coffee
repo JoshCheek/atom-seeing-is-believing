@@ -63,7 +63,7 @@ module.exports =
       # Why using indexOf? Considerations and thoughts can be seen at:
       #   https://github.com/JoshCheek/atom-seeing-is-believing/pull/15
       if capturedError.indexOf('LoadError') != -1
-        alert("It looks like the Seeing is Believing gem hasn't been installed, run\n`gem install seeing is believing`\nto do so, then make sure it worked with\n`seeing_is_believing --version`\n\nIf it should be installed, check logs to see what was executed\n(Option+Command+I)")
+        alert("It looks like the Seeing is Believing gem hasn't been installed, run\n`gem install seeing_is_believing`\nto do so, then make sure it worked with\n`seeing_is_believing --version`\n\nIf it should be installed, check logs to see what was executed\n(Option+Command+I)")
       else if code == 2 # nondisplayable error
         alert(capturedError)
       else
