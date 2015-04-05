@@ -1,6 +1,10 @@
 # http://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
 spawn = require('child_process').spawn
 
+# https://atom.io/docs/api/v0.189.0/CompositeDisposable
+# An object that aggregates multiple Disposable instances together into a single disposable, so they can all be disposed as a group.
+{CompositeDisposable} = require 'atom'
+
 # https://github.com/JoshCheek/atom-seeing-is-believing/issues/8
 defaultLang = 'en_US.UTF-8'
 
@@ -17,12 +21,17 @@ defaultLang = 'en_US.UTF-8'
 #   if there is not stderr or stdout
 #     close the stdout / stderr panes if they are open
 
-module.exports =
+module.exports = SeeingIsBelieving =
   # These assume the active pane item is an editor <-- is there some way to guard agains this being untrue? e.g. check its class or methods
   activate: ->
-    atom.commands.add 'atom-workspace', 'seeing-is-believing:annotate-document',       => @annotateDocument()
-    atom.commands.add 'atom-workspace', 'seeing-is-believing:annotate-magic-comments', => @annotateMagicComments()
-    atom.commands.add 'atom-workspace', 'seeing-is-believing:remove-annotations',      => @removeAnnotations()
+    @subscriptions = new CompositeDisposable
+    @subscriptions.add atom.commands.add 'atom-workspace',
+      'seeing-is-believing:annotate-document':       => @annotateDocument(),
+      'seeing-is-believing:annotate-magic-comments': => @annotateMagicComments(),
+      'seeing-is-believing:remove-annotations':      => @removeAnnotations()
+
+  deactivate: ->
+    @subscriptions.dispose()
 
   configDefaults:
     'ruby-command':  'ruby'
