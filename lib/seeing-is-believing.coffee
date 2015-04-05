@@ -87,7 +87,7 @@ module.exports =
 
     # other useful objs
     rubyCommand     = sibConfig['ruby-command'] ? 'ruby'
-    editor          = atom.workspace.activePaneItem
+    editor          = atom.workspace.getActivePaneItem()
     fileName        = editor.getPath()
 
     # if file is saved, run as that file (otherwise uses a tempfile)
