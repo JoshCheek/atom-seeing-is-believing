@@ -160,15 +160,11 @@ module.exports = SeeingIsBelieving =
       mergedObj[key] = value
     mergedObj
 
-  # The way this is used, it winds up resetting your screen/cursor at the time of invocation,
-  # rather than just before dumping the results in. For a script that takes more than a second
-  # to run, that winds up jumping you back to where you were at the time of invocation,
-  # which is a pretty jolting experience.
   withoutMovingScreenOrCursor: (editor, f) ->
-    cursor        = editor.getCursorScreenPosition()
-    scrollTop     = editor.displayBuffer.getScrollTop()
-    scrollLeft    = editor.displayBuffer.getScrollLeft()
+    cursor        = editor.getCursorBufferPosition()
+    scrollTop     = editor.getScrollTop()
+    scrollLeft    = editor.getScrollLeft()
     f()
-    editor.displayBuffer.setScrollLeft(scrollLeft)
-    editor.displayBuffer.setScrollTop(scrollTop)
-    editor.setCursorScreenPosition cursor
+    editor.setCursorBufferPosition(cursor)
+    editor.setScrollLeft(scrollLeft)
+    editor.setScrollTop(scrollTop)
