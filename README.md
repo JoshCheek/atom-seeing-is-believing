@@ -50,88 +50,17 @@ but in reality, it does not know how to find your Ruby, or what settings you wan
 
 ## Custom configuration
 
-To customize it to always work, regardless of how you start Atom, edit your config file
-(on my Mac, that's at `~/.atom/config.cson`).
-Add the following keys (as of 0.138.0, they go under 'global', before that,
-you can just append this to the bottom of the file),
-changing them as appropriate for your environment,
-and according to your preferences.
+To customize it to always work, simply edit the values in the package settings.
 
-[**Here is what my configuration looks like**](https://gist.github.com/JoshCheek/ff2a4e82587b68f3b190)
+[**Here is what my configuration looks like (from before atom package settings was used)**](https://gist.github.com/JoshCheek/ff2a4e82587b68f3b190)
 
-**Here are the configuraiton options you can set**
+### Seeing is believing command
 
-Descriptions of the variables are below.
+This is the absolute path to your `seeing_is_believing` command. You may need to run
+`which seeing_is_believing` or `rbenv which seeing_is_believing` to find this. Examples:
+`/home/USERNAME/.gem/ruby/2.3.0/bin/seeing_is_believing` or `/usr/local/bin/bundle exec seeing_is_believing`.
 
-```coffeescript
-'seeing-is-believing':
-  'ruby-command': 'path/to/your/ruby'
-  'add-to-env':
-    "SOME_KEY":    "SOME_VALUE"
-    "ADD_TO_PATH": "dir1:dir2"
-  'flags': [
-      '--alignment-strategy', 'chunk',
-      '--number-of-captures', '300',
-      '--line-length',        '1000',
-      '--timeout',            '12'
-  ]
-```
-
-### ruby-command
-
-`ruby-command` is the location of the ruby program you want to run.
-
-**rvm** You need to [make a wrapper](https://rvm.io/integration/textmate),
-an executable that sets everything up for you. Run `rvm list strings` to see
-what versions you have available, then `$ rvm wrapper YOUR_VERSION sib`, e.g.
-`$ rvm wrapper ruby-2.0.0-p481 sib`. Now, set your `ruby-command` to
-whatever `$ which sib_ruby` tells you.
-
-**rbenv** set it to whatever `$ which ruby` tells you
-
-**chruby** You can set it to whatever `$ which ruby` tells you,
-and then set environment variables as described below,
-or you can make your own wrapper like [this](https://github.com/JoshCheek/dotfiles/blob/c307d7c0af66c616281c82b48f0f28d3ea190a40/bin/sib_ruby),
-and then set it to the path to that wrapper.
-
-
-### add-to-env
-
-Here, you can specify environment variables.
-
-**rvm** If you used the wrapper approach above, then you don't need any environment variables.
-
-**rbenv** You need to set `RBENV_VERSION`,
-you can see what your it should be with `$ env | grep RBENV_VERSION`.
-If you don't have anything there, you can do `$ rbenv versions` to see a list of possibilities
-(remember, you need SiB installed for that Ruby). I recently set the value to `2.1.1` for someone,
-and set their `ruby-command` to `/Users/username/.rbenv/shims/ruby`, which worked correctly.
-
-**chruby** If you made your own wrapper above, you don't need to do anything here.
-Otherwise, chruby requires a lot of variables,
-look in your current environment to see what they should be.
-[Here is an example](https://github.com/JoshCheek/atom-seeing-is-believing/blob/d271293ee62deb3f7748ce2fa5343b1efc4a50de/lib/seeing-is-believing.coffee#L54-65)
-that worked for me.
-It might also be worth setting your SHELL environment variable
-to bash, otherwise [this](https://github.com/postmodern/chruby/blob/dadcdba85e50fd2b62930d6bb7835972873f879b/bin/chruby-exec#L36)
-could fuck up (e.g. I set mine to fish for other packages that actually launch a shell,
-which causes, this to happen).
-
-
-### modifying the path
-To add paths, use the environment variable `ADD_TO_PATH` (this will go in `add-to-env` key)
-
-**rvm** you should be fine
-
-**rbenv** You might need to set it to `/Users/YOUR_USERNAME/.rbenv/shims` I'm not sure.
-
-**chruby** If you used the wrapper above, you don't need to do anything here.
-Otherwise, run `env | grep PATH` and set it to whatever you think was added by chruby.
-You can look at [my example](https://github.com/JoshCheek/atom-seeing-is-believing/blob/d271293ee62deb3f7748ce2fa5343b1efc4a50de/lib/seeing-is-believing.coffee#L54-65)
-to see what I wound up adding.
-
-
-### flags
+### Flags
 
 You can get a full list of flags by running `seeing_is_believing --help`
 The most common and useful ones are going to be:
