@@ -40,7 +40,7 @@ This integrates into your specific environment, it doesn't come with the gem loa
 Install it by getting into the environment you want, and running:
 
 ```
-$ gem install seeing_is_believing
+$ gem install seeing_is_believing --version 3.0.0.beta.7
 ```
 
 If you're using rbenv, you'll need to `$ rbenv rehash` afterwards. You can check that it worked
