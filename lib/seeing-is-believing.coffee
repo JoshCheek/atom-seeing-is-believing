@@ -41,6 +41,7 @@ module.exports = SeeingIsBelieving =
         type: 'string'
 
   activate: ->
+    @notifications = []
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.commands.add 'atom-workspace',
       'seeing-is-believing:annotate-document':       => @run [],
@@ -56,12 +57,14 @@ module.exports = SeeingIsBelieving =
     sibCommand    = atom.config.get('seeing-is-believing.sibCommand')
     args          = args.concat atom.config.get('seeing-is-believing.flags')
     @invokeSib sibCommand, args, editor.getText(), editor.getPath(), (code, stdout, stderr) =>
+      @dismissOurNotifications()
       if code == 2 # nondisplayable error
-        atom.notifications.addError 'Seeing Is Believing',
-                                    detail: "exec error: #{stderr}",
-                                    dismissable: true
+        @notifications.push atom.notifications.addError('Seeing Is Believing', detail: "exec error: #{stderr}", dismissable: true)
       else
         @withoutMovingScreenOrCursor editor, -> editor.setText(stdout + stderr)
+
+  dismissOurNotifications: ->
+    @notifications.shift().dismiss() while 0 < @notifications.length
 
   invokeSib: (sibCommand, args, body, filename, onClose) ->
     args.push('--as', filename) if filename
