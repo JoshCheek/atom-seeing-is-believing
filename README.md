@@ -37,28 +37,22 @@ Or, you can do it from the command line `$ apm install seeing-is-believing`
 ## You need [Seeing Is Believing](https://github.com/JoshCheek/seeing_is_believing) installed
 
 This integrates into your specific environment, it doesn't come with the gem loaded by default.
-Install it by getting into the environment you want, and running `$ gem install seeing_is_believing`
+Install it by getting into the environment you want, and running:
+
+```
+$ gem install seeing_is_believing
+```
+
 If you're using rbenv, you'll need to `$ rbenv rehash` afterwards. You can check that it worked
 by running `$ seeing_is_believing --version`
 
-## Using the default configuration
+## Configuration
 
-This package uses somewhat intelligent defaults,
-but in reality, it does not know how to find your Ruby, or what settings you want to use.
-**The defaults will only work if you launch atom from the console**
-(this is because it will then inherit your environment variables)
-
-## Custom configuration
-
-To customize it to always work, simply edit the values in the package settings.
-
-[**Here is what my configuration looks like (from before atom package settings was used)**](https://gist.github.com/JoshCheek/ff2a4e82587b68f3b190)
-
-### Seeing is believing command
-
-This is the absolute path to your `seeing_is_believing` command. You may need to run
-`which seeing_is_believing` or `rbenv which seeing_is_believing` to find this. Examples:
-`/home/USERNAME/.gem/ruby/2.3.0/bin/seeing_is_believing` or `/usr/local/bin/bundle exec seeing_is_believing`.
+Atom now loads your shell environment by launching a shell and printing the environment variables,
+which it then loads into its own environment variables. So, assuming that your system's `SHELL`
+variable is set to your shell, and your shell sets your Ruby, then everything should just work.
+If not, though, you can create your own executable to set up the environment and run Seeing Is Believing.
+A configuration option is left available for this purpose.
 
 ### Flags
 
@@ -71,14 +65,6 @@ The most common and useful ones are going to be:
   it would eat up your memory, maybe start paging, and just generally take a really long time to execute)
 * '--line-length' (how much output to show, use this to keep it from affecting editor performance or getting too spammy)
 * '--timeout' (say you accidentally have an infinite loop... don't want to wait around forever!)
-
-
-## Troubleshooting
-
-* Do you have the gem installed in the correct environment? (load your env in whatever way you do that, and then `gem which seeing_is_believing`)
-* Do you have the package installed? (Command+Shift+P and start typing "seeing", you should see the commands and be able to run them from there)
-* What do the logs say? (use Command+Option+I to run the console, the package will print some debugging information you can look at)
-* Did Atom get really messed up after you installed this? Probably the `~/.atom/config.cson` has a syntax error or something, which will mess up all the configuration, not just Seeing Is Believing's
 
 ## <a href="http://www.wtfpl.net/"><img src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl.svg" height="20" alt="WTFPL" /></a> License
 
