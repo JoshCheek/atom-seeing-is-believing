@@ -1,4 +1,4 @@
-'.source.ruby':
+'*':
   'In memory ActiveRecord bootstrap':
     'prefix': 's_arb'
     'body': 'require \'active_record\'\nrequire \'logger\'\n\nActiveRecord::Base.establish_connection adapter: \'sqlite3\', database: \':memory:\'\nActiveRecord::Base.logger = Logger.new \$stdout\nActiveSupport::LogSubscriber.colorize_logging = false\n\nActiveRecord::Schema.define do\n  self.verbose = false\n  \n  create_table :users do |t|\n    t.string :name\n  end\n  \n  create_table :posts do |t|\n    t.string :name\n    t.integer :user_id\n  end\nend\n\nclass User < ActiveRecord::Base\n  has_many :posts\nend\n\nclass Post < ActiveRecord::Base\n  belongs_to :user\nend\n\nuser = User.create! name: \'Josh\'\nuser.posts = [Post.new(name: \'yo ho ho\'), Post.new(name: \'and a bottle of rum\')]\n'
