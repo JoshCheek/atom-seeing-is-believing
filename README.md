@@ -39,32 +39,38 @@ Or, you can do it from the command line `$ apm install seeing-is-believing`
 This integrates into your specific environment, it doesn't come with the gem loaded by default.
 Install it by getting into the environment you want, and running:
 
-```
-$ gem install seeing_is_believing --version 3.0.0.beta.7
+```sh
+$ gem install seeing_is_believing
+$ seeing_is_believing -e '1 + 1'   # to check that it worked
 ```
 
-If you're using rbenv, you'll need to `$ rbenv rehash` afterwards. You can check that it worked
-by running `$ seeing_is_believing --version`
+If you use rbenv, you may need to `$ rbenv rehash`
+
 
 ## Configuration
 
-Atom now loads your shell environment by launching a shell and printing the environment variables,
+### Custom / non-working Ruby environment
+
+Atom loads your shell environment by launching a shell and printing the environment variables,
 which it then loads into its own environment variables. So, assuming that your system's `SHELL`
 variable is set to your shell, and your shell sets your Ruby, then everything should just work.
+
 If not, though, you can create your own executable to set up the environment and run Seeing Is Believing.
-A configuration option is left available for this purpose.
+The "Seeing is believing command" option is available in the configuraiton, it's intended for this purpose.
+
 
 ### Flags
 
 You can get a full list of flags by running `seeing_is_believing --help`
 The most common and useful ones are going to be:
 
-* "--alignment-strategy" (I recommend "chunk")
+* "--alignment-strategy" (defaults to "chunk", but you may want "file")
 * "--number-of-captures" (say you have a line that executes in a loop, 1 million times,
   you don't want to record all 1 million of those invocations, because it's too much information,
   it would eat up your memory, maybe start paging, and just generally take a really long time to execute)
 * '--line-length' (how much output to show, use this to keep it from affecting editor performance or getting too spammy)
 * '--timeout' (say you accidentally have an infinite loop... don't want to wait around forever!)
+
 
 ## <a href="http://www.wtfpl.net/"><img src="http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl.svg" height="20" alt="WTFPL" /></a> License
 
