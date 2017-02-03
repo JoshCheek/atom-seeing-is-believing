@@ -52,8 +52,8 @@ module.exports = SeeingIsBelieving =
     @subscriptions.dispose()
 
   run: (args) ->
-    editor        = atom.workspace.getActivePaneItem()
-    return unless @isEditor? editor
+    editor        = atom.workspace.getActiveTextEditor()
+    return unless editor
     sibCommand    = atom.config.get('seeing-is-believing.sibCommand')
     args          = args.concat atom.config.get('seeing-is-believing.flags')
     @invokeSib sibCommand, args, editor.getText(), editor.getPath(), (code, stdout, stderr) =>
@@ -76,22 +76,12 @@ module.exports = SeeingIsBelieving =
     sib.stdin.write(body)
     sib.stdin.end()
 
-  isEditor: (editor) ->
-    # can't figure out a good way to ask it what it is, so just asking if I can do all the stuff I want with it
-    editor?                           &&
-      editor.getText?                 &&
-      editor.setText?                 &&
-      editor.getPath?                 &&
-      editor.getCursorBufferPosition? &&
-      editor.setCursorBufferPosition? &&
-      editor.setScrollLeft?           &&
-      editor.setScrollTop?
-
   withoutMovingScreenOrCursor: (editor, f) ->
+    element       = editor.element
     cursor        = editor.getCursorBufferPosition()
-    scrollTop     = editor.getScrollTop()
-    scrollLeft    = editor.getScrollLeft()
+    scrollTop     = element.getScrollTop()
+    scrollLeft    = element.getScrollLeft()
     f()
     editor.setCursorBufferPosition(cursor)
-    editor.setScrollLeft(scrollLeft)
-    editor.setScrollTop(scrollTop)
+    element.setScrollLeft(scrollLeft)
+    element.setScrollTop(scrollTop)
