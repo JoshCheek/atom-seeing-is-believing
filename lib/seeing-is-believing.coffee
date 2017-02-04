@@ -52,7 +52,6 @@ module.exports = SeeingIsBelieving =
     @subscriptions.dispose()
 
   run: (args) ->
-    console.log('ANNOTATING THE DOCUMENT')
     editor = atom.workspace.getActiveTextEditor()
 
     # Ideally we figure out whether this can happen,

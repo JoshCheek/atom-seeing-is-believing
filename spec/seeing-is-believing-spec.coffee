@@ -70,6 +70,14 @@
 
 SiB = require '../lib/seeing-is-believing'
 
+# *sigh* for whatever reason, the test environment does not have the environment
+# variables from the process. This causes it to be unable to locate the seeing_is_believing
+# executable. So we're just going to do it ourselves.
+require('child_process').exec '/bin/bash -ilc "command env"', (error, stdout, stderr) ->
+  for definition in stdout.split('\n')
+    [key, value] = definition.trim().split('=', 2)
+    process.env[key] = value
+
 describe "Seeing Is Believing extension", ->
   [editorElement, editor] = []
 
@@ -119,33 +127,15 @@ describe "Seeing Is Believing extension", ->
     it 'annotates every line in the document', ->
       original = "1  # => \n2"
       expected = "1  # => 1\n2  # => 2"
-      # console.log('setTimeout:', window.setTimeout)
       editor.insertText original
-      # Oh my god, I don't fucking know.
-      # There is supposed to be a listener that invokes the command,
-      # that listener is definitely defined outside my test, but not inside
-      # Run this code in the atom window and you'll see it, but run it in the onDidDispatch and it's not there:
-      #    atom.commands.selectorBasedListenersByCommandName['seeing-is-believing:annotate-document']
-      atom.commands.onDidDispatch (event) ->
-        currentTarget = event.target
-        console.log("type:", event.type)
-        console.log('expected:', atom.commands.selectorBasedListenersByCommandName)
-        listeners = atom.commands.selectorBasedListenersByCommandName[event.type]
-        console.log("Listeners1:", listeners)
-        listeners = listeners.filter (listener) -> currentTarget.webkitMatchesSelector(listener.selector)
-        console.log("listeners2:", listeners)
-        console.log("Event: ", event.type, event.target.webkitMatchesSelector)
-
-      smth = atom.commands.dispatch(editorElement, 'seeing-is-believing:annotate-document')
-      console.log('smth: ', smth)
-      window.myEditor = editor
-      # waitsForPromise ->
-      #   console.log("making Promise")
-      #   waitForAsync ->
-      #     console.log("checking now:", editor.getText())
-      #     original != editor.getText()
-      # runs ->
-      #   expect(editor.getText()).toEqual expected
+      dispatched = atom.commands.dispatch(editorElement, 'seeing-is-believing:annotate-document')
+      console.log("DISPATCHED:", dispatched)
+      window.myEditor = editor # for debugging
+      console.log(editor.getText())
+      waitsFor ->
+        original != editor.getText()
+      runs ->
+        expect(editor.getText()).toEqual expected
 
   describe 'seeing-is-believing:annotate-magic-comments', ->
     xit 'only annotates lines that are already marked', ->
