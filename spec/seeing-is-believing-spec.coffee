@@ -105,9 +105,11 @@ describe "Seeing Is Believing extension", ->
       editorElement = atom.views.getView(editor)
       editor.setGrammar atom.grammars.grammarForScopeName('source.ruby')
 
+  # I can't figure out how to pull out a helper method, they wind up being defined
+  # on some other object, which means that they can't access stuff from the test context
   describe 'seeing-is-believing:annotate-document', ->
     it 'annotates every line in the document', ->
-      original = "1  # => \n2"
+      original = "1\n2  # => "
       expected = "1  # => 1\n2  # => 2"
       editor.insertText original
       dispatched = atom.commands.dispatch(editorElement, 'seeing-is-believing:annotate-document')
@@ -117,8 +119,8 @@ describe "Seeing Is Believing extension", ->
 
   describe 'seeing-is-believing:annotate-magic-comments', ->
     it 'only annotates lines that are already marked', ->
-      original = "1  # => \n2"
-      expected = "1  # => 1\n2"
+      original = "1\n2  # => "
+      expected = "1\n2  # => 2"
       editor.insertText original
       dispatched = atom.commands.dispatch(editorElement, 'seeing-is-believing:annotate-magic-comments')
       expect(dispatched).toEqual true
@@ -126,10 +128,14 @@ describe "Seeing Is Believing extension", ->
       runs -> expect(editor.getText()).toEqual expected
 
   describe 'seeing-is-believing:remove-annotations', ->
-    xit 'clears out the annotations', ->
-      # make a document with a marked and unmarked line
-      # run it
-      # the marked line should be cleared
+    it 'clears out the annotations', ->
+      original = "1\n2  # => "
+      expected = "1\n2"
+      editor.insertText original
+      dispatched = atom.commands.dispatch(editorElement, 'seeing-is-believing:remove-annotations')
+      expect(dispatched).toEqual true
+      waitsFor -> original != editor.getText()
+      runs -> expect(editor.getText()).toEqual expected
 
   describe 'when the file is saved', ->
     xit 'informs SiB of the path and filename'
