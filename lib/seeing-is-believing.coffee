@@ -43,10 +43,25 @@ module.exports = SeeingIsBelieving =
   activate: ->
     @notifications = []
     @subscriptions = new CompositeDisposable
+    # The snippets package subscribes to "atom-text-editor"
+    # what's the difference? Sounds like it's what we actually want and would let
+    # us get rid fo teh `return unless editor` check down below
     @subscriptions.add atom.commands.add 'atom-workspace',
       'seeing-is-believing:annotate-document':       => @run [],
       'seeing-is-believing:annotate-magic-comments': => @run ['--xmpfilter-style'],
       'seeing-is-believing:remove-annotations':      => @run ['--clean']
+    @subscriptions.add atom.commands.onDidDispatch (event) =>
+      return unless event.type == "snippets:expand"
+      editor = atom.workspace.getActiveTextEditor()         # I think we can assume this since snippets:expand did dispatch, note they use @getModel, to do this, but a quick glance around didn't locate it, so maybe look for it if I keep this
+      scope  = editor.getLastCursor().getScopeDescriptor()
+      scopes = scope?.getScopesArray?()                     # IDK if I need the ?s, just cargo culting their work: https://github.com/atom/snippets/blob/c93956cc7306632beede152d77a7d4f757bc70a9/lib/snippets.coffee#L193
+      return unless scopes && scopes.includes("source.ruby")
+      didExpand = false
+      editor.getCursors().forEach (cursor) =>
+        {row, column} = cursor.getBufferPosition()
+        text = editor.getTextInRange([{row, column: column-5}, {row, column: column}])
+        console.log(text)
+        @run ['--xmpfilter-style'] if text == "# => "
 
   deactivate: ->
     @subscriptions.dispose()
