@@ -70,9 +70,9 @@
 
 SiB = require '../lib/seeing-is-believing'
 
-# *sigh* for whatever reason, the test environment does not have the environment
-# variables from the process. This causes it to be unable to locate the seeing_is_believing
-# executable. So we're just going to do it ourselves.
+# *sigh* for whatever reason, the test environment does not have the env vars
+# from the process. This causes it to be unable to locate the seeing_is_believing
+# executable. So just add them here, ourselves.
 require('child_process').exec '/bin/bash -ilc "command env"', (error, stdout, stderr) ->
   for definition in stdout.split('\n')
     [key, value] = definition.trim().split('=', 2)
@@ -81,17 +81,6 @@ require('child_process').exec '/bin/bash -ilc "command env"', (error, stdout, st
 describe "Seeing Is Believing extension", ->
   [editorElement, editor] = []
 
-  #
-  waitForAsync = (checkCondition) ->
-    new Promise (resolve, reject) ->
-      maybeResolve = ->
-        if checkCondition()
-          resolve()
-        else
-          setTimeout(maybeResolve, 5)
-      maybeResolve()
-
-  # based on git logs, it took me nearly 2 hours to figure this out >.<
   activatePackage = (packageName) ->
     # Call the toplevel activation method in order to get the promise
     # We must do this before we activate the package, for whatever reason -.-
@@ -107,7 +96,6 @@ describe "Seeing Is Believing extension", ->
 
 
   beforeEach ->
-    # atom.commands.dispatch(editorElement, "application:new-file")
     waitsForPromise -> atom.workspace.open()
     waitsForPromise -> activatePackage 'language-ruby'
     waitsForPromise -> activatePackage 'seeing-is-believing'
@@ -120,8 +108,8 @@ describe "Seeing Is Believing extension", ->
       rubyGrammar   = atom.grammars.grammarForScopeName('source.ruby')
       editor.setGrammar(rubyGrammar)
 
-  # afterEach ->
-  #   atom.packages.deactivatePackage('seeing-is-believing')
+  afterEach ->
+    atom.packages.deactivatePackage('seeing-is-believing')
 
   describe 'seeing-is-believing:annotate-document', ->
     it 'annotates every line in the document', ->
@@ -129,13 +117,9 @@ describe "Seeing Is Believing extension", ->
       expected = "1  # => 1\n2  # => 2"
       editor.insertText original
       dispatched = atom.commands.dispatch(editorElement, 'seeing-is-believing:annotate-document')
-      console.log("DISPATCHED:", dispatched)
-      window.myEditor = editor # for debugging
-      console.log(editor.getText())
-      waitsFor ->
-        original != editor.getText()
-      runs ->
-        expect(editor.getText()).toEqual expected
+      expect(dispatched).toEqual true
+      waitsFor -> original != editor.getText()
+      runs -> expect(editor.getText()).toEqual expected
 
   describe 'seeing-is-believing:annotate-magic-comments', ->
     xit 'only annotates lines that are already marked', ->
