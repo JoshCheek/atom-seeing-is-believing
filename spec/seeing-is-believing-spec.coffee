@@ -79,8 +79,10 @@ require('child_process').exec '/bin/bash -ilc "command env"', (error, stdout, st
     process.env[key] = value
 
 describe "Seeing Is Believing extension", ->
+  # I assume this is an iffy way to share state between the lifecycle hooks and the tests
   [editorElement, editor] = []
 
+  # *sigh* the package doesn't activate so we have to do it in this contrived manner
   activatePackage = (packageName) ->
     # Call the toplevel activation method in order to get the promise
     # We must do this before we activate the package, for whatever reason -.-
@@ -94,22 +96,14 @@ describe "Seeing Is Believing extension", ->
     # Now return the pre-activation promise
     promise
 
-
   beforeEach ->
     waitsForPromise -> atom.workspace.open()
     waitsForPromise -> activatePackage 'language-ruby'
     waitsForPromise -> activatePackage 'seeing-is-believing'
-
-    # I *think* `runs` executes after promises resolve, not sure,
-    # half of this is cargo culted from the Snippets package
     runs ->
       editor        = atom.workspace.getActiveTextEditor()
       editorElement = atom.views.getView(editor)
-      rubyGrammar   = atom.grammars.grammarForScopeName('source.ruby')
-      editor.setGrammar(rubyGrammar)
-
-  afterEach ->
-    atom.packages.deactivatePackage('seeing-is-believing')
+      editor.setGrammar atom.grammars.grammarForScopeName('source.ruby')
 
   describe 'seeing-is-believing:annotate-document', ->
     it 'annotates every line in the document', ->
@@ -122,10 +116,15 @@ describe "Seeing Is Believing extension", ->
       runs -> expect(editor.getText()).toEqual expected
 
   describe 'seeing-is-believing:annotate-magic-comments', ->
-    xit 'only annotates lines that are already marked', ->
-      # make a document with a marked and unmarked line
-      # run it
-      # the marked line should be updated
+    it 'only annotates lines that are already marked', ->
+      original = "1  # => \n2"
+      expected = "1  # => 1\n2"
+      editor.insertText original
+      dispatched = atom.commands.dispatch(editorElement, 'seeing-is-believing:annotate-magic-comments')
+      expect(dispatched).toEqual true
+      waitsFor -> original != editor.getText()
+      runs -> expect(editor.getText()).toEqual expected
+
   describe 'seeing-is-believing:remove-annotations', ->
     xit 'clears out the annotations', ->
       # make a document with a marked and unmarked line
