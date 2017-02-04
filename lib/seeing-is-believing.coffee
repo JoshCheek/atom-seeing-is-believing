@@ -43,7 +43,7 @@ module.exports = SeeingIsBelieving =
   activate: ->
     @notifications = []
     @subscriptions = new CompositeDisposable
-    @subscriptions.add atom.commands.add 'atom-workspace',
+    @subscriptions.add atom.commands.add 'atom-text-editor',
       'seeing-is-believing:annotate-document':       => @run [],
       'seeing-is-believing:annotate-magic-comments': => @run ['--xmpfilter-style'],
       'seeing-is-believing:remove-annotations':      => @run ['--clean']
@@ -52,6 +52,7 @@ module.exports = SeeingIsBelieving =
     @subscriptions.dispose()
 
   run: (args) ->
+    console.log('ANNOTATING THE DOCUMENT')
     editor = atom.workspace.getActiveTextEditor()
 
     # Ideally we figure out whether this can happen,
@@ -128,4 +129,3 @@ module.exports = SeeingIsBelieving =
     keymaps.findKeyBindings(command: name, target: editor.element)
            .map((cmd) -> cmd.keystrokes)
            .filter((ks) -> ks)[0]
-
