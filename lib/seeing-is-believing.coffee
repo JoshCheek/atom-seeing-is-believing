@@ -52,18 +52,36 @@ module.exports = SeeingIsBelieving =
     @subscriptions.dispose()
 
   run: (args) ->
-    editor        = atom.workspace.getActiveTextEditor()
+    editor = atom.workspace.getActiveTextEditor()
+
+    # Ideally we figure out whether this can happen,
+    # and if so, update the scope on our subscription.
     return unless editor
-    sibCommand    = atom.config.get('seeing-is-believing.sibCommand')
-    args          = args.concat atom.config.get('seeing-is-believing.flags')
+
+    # Here, we intentionally avoid using a subscription to scope this as there's
+    # no feedback about why it's not working, so it just seems broken. Eg #26
+    if @isntRuby editor
+      @dismissOurErrors()
+      @notifyError "Seeing Is Believing expects a Ruby file",
+                   description: @expectedRubyError(editor, atom.keymaps),
+                   dismissable: true
+      return
+
+    sibCommand = atom.config.get('seeing-is-believing.sibCommand')
+    args       = args.concat atom.config.get('seeing-is-believing.flags')
+
     @invokeSib sibCommand, args, editor.getText(), editor.getPath(), (code, stdout, stderr) =>
-      @dismissOurNotifications()
+      @dismissOurErrors()
       if code == 2 # nondisplayable error
-        @notifications.push atom.notifications.addError('Seeing Is Believing', detail: "exec error: #{stderr}", dismissable: true)
+        @notifyError 'Seeing Is Believing', detail: "exec error: #{stderr}", dismissable: true
       else
         @withoutMovingScreenOrCursor editor, -> editor.setText(stdout + stderr)
 
-  dismissOurNotifications: ->
+  # https://atom.io/docs/api/v1.13.1/NotificationManager#instance-addError
+  notifyError: (message, options) ->
+    @notifications.push atom.notifications.addError(message, options)
+
+  dismissOurErrors: ->
     @notifications.shift().dismiss() while 0 < @notifications.length
 
   invokeSib: (sibCommand, args, body, filename, onClose) ->
@@ -85,3 +103,29 @@ module.exports = SeeingIsBelieving =
     editor.setCursorBufferPosition(cursor)
     element.setScrollLeft(scrollLeft)
     element.setScrollTop(scrollTop)
+
+  isntRuby: (editor) ->
+    "ruby" != editor.getGrammar().name.toLowerCase()
+
+  expectedRubyError: (editor, keymaps) ->
+    grammarName = editor.getGrammar().name
+    grammarKeys = @keystrokesFor editor, keymaps, "grammar-selector:show"
+    howToOpenGrammarSelector =
+      if grammarKeys?
+        "`#{grammarKeys}` or click `#{grammarName}` in the bottom right of the window"
+      else
+        "click `#{grammarName}` in the bottom right of the window"
+    """
+    Atom thinks your file is `#{grammarName}`.
+
+    To tell Atom that this is a `Ruby` file, use the Grammar Selector
+    (#{howToOpenGrammarSelector}).
+
+    The syntax highlighting will change and you'll see `Ruby` in the bottom-right.
+    """
+
+  keystrokesFor: (editor, keymaps, name) ->
+    keymaps.findKeyBindings(command: name, target: editor.element)
+           .map((cmd) -> cmd.keystrokes)
+           .filter((ks) -> ks)[0]
+
