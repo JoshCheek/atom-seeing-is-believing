@@ -22,6 +22,7 @@ module.exports = SeeingIsBelieving =
   config:
     sibCommand:
       title: 'Seeing is believing command'
+      # Update this description, it doesn't need to be so verbose now that Atom checks the environment on its own
       description: '
         This is the absolute path to your `seeing_is_believing` command. You may need to run
         `which seeing_is_believing` or `rbenv which seeing_is_believing` to find this. Examples:
@@ -52,14 +53,13 @@ module.exports = SeeingIsBelieving =
     @subscriptions.dispose()
 
   run: (args) ->
-    editor = atom.workspace.getActiveTextEditor()
+    # IDK why the editor might not exist, but build it if that happens somehow
+    editor = atom.workspace.getActiveTextEditor() || atom.workspace.buildTextEditor()
 
-    # Ideally we figure out whether this can happen,
-    # and if so, update the scope on our subscription.
-    return unless editor
-
-    # Here, we intentionally avoid using a subscription to scope this as there's
-    # no feedback about why it's not working, so it just seems broken. Eg #26
+    # Here, we intentionally check the grammar rather than scoping to Ruby.
+    # This is because the scope means it won't be active outside Ruby which
+    # means the user tries to run it and nothing happens, which looks like it's
+    # broken and doesn't help them fix it.
     if @isntRuby editor
       @dismissOurErrors()
       @notifyError "Seeing Is Believing expects a Ruby file",
@@ -70,9 +70,10 @@ module.exports = SeeingIsBelieving =
     sibCommand = atom.config.get('seeing-is-believing.sibCommand')
     args       = args.concat atom.config.get('seeing-is-believing.flags')
 
-    @invokeSib sibCommand, args, editor.getText(), editor.getPath(), (code, stdout, stderr) =>
+    @invokeSib sibCommand, args, editor.getText(), editor.getPath(), (exitStatus, stdout, stderr) =>
       @dismissOurErrors()
-      if code == 2 # nondisplayable error
+      nonDisplayableError = (2 == exitStatus)
+      if nonDisplayableError
         @notifyError 'Seeing Is Believing', detail: "exec error: #{stderr}", dismissable: true
       else
         @withoutMovingScreenOrCursors editor, -> editor.setText(stdout + stderr)
@@ -90,7 +91,7 @@ module.exports = SeeingIsBelieving =
     sib = spawn(sibCommand, args)
     sib.stdout.on 'data',  (output) -> stdout += output
     sib.stderr.on 'data',  (output) -> stderr += output
-    sib.on        'close', (code)   -> onClose(code, stdout, stderr)
+    sib.on        'close', (status) -> onClose(status, stdout, stderr)
     sib.stdin.write(body)
     sib.stdin.end()
 
@@ -115,6 +116,7 @@ module.exports = SeeingIsBelieving =
         "`#{grammarKeys}` or click `#{grammarName}` in the bottom right of the window"
       else
         "click `#{grammarName}` in the bottom right of the window"
+
     """
     Atom thinks your file is `#{grammarName}`.
 
