@@ -75,7 +75,7 @@ module.exports = SeeingIsBelieving =
       if code == 2 # nondisplayable error
         @notifyError 'Seeing Is Believing', detail: "exec error: #{stderr}", dismissable: true
       else
-        @withoutMovingScreenOrCursor editor, -> editor.setText(stdout + stderr)
+        @withoutMovingScreenOrCursors editor, -> editor.setText(stdout + stderr)
 
   # https://atom.io/docs/api/v1.13.1/NotificationManager#instance-addError
   notifyError: (message, options) ->
@@ -94,13 +94,13 @@ module.exports = SeeingIsBelieving =
     sib.stdin.write(body)
     sib.stdin.end()
 
-  withoutMovingScreenOrCursor: (editor, f) ->
+  withoutMovingScreenOrCursors: (editor, f) ->
     element       = editor.element
-    cursor        = editor.getCursorBufferPosition()
+    cursors       = editor.getSelectedBufferRanges()
     scrollTop     = element.getScrollTop()
     scrollLeft    = element.getScrollLeft()
     f()
-    editor.setCursorBufferPosition(cursor)
+    editor.setSelectedBufferRanges(cursors)
     element.setScrollLeft(scrollLeft)
     element.setScrollTop(scrollTop)
 
