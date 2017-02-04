@@ -19,19 +19,6 @@
 # beforeEach ->
 #   spyOn(Snippets, 'loadAll')
 #   spyOn(Snippets, 'getUserSnippetsPath').andReturn('')
-#
-#   waitsForPromise ->
-#     atom.workspace.open('sample.js')
-#
-#   waitsForPromise ->
-#     atom.packages.activatePackage('language-javascript')
-#
-#   waitsForPromise ->
-#     atom.packages.activatePackage("snippets")
-#
-#   runs ->
-#     editor = atom.workspace.getActiveTextEditor()
-#     editorElement = atom.views.getView(editor)
 
 # simulateTabKeyEvent = ({shift}={}) ->
 #   event = atom.keymaps.constructor.buildKeydownEvent('tab', {shift, target: editorElement})
@@ -61,10 +48,8 @@
 #   configDirPath = temp.mkdirSync('atom-config-dir-')
 #   spyOn(atom, 'getConfigDirPath').andReturn configDirPath
 #   atom.workspace.open('atom://.atom/snippets')
-#   waitsFor ->
-#     atom.workspace.getActiveTextEditor()?
-#   runs ->
-#     expect(atom.workspace.getActiveTextEditor().getURI()).toBe path.join(configDirPath, 'snippets.cson')
+#   waitsFor -> atom.workspace.getActiveTextEditor()?
+#   runs -> expect(atom.workspace.getActiveTextEditor().getURI()).toBe path.join(configDirPath, 'snippets.cson')
 
 SiB = require '../lib/seeing-is-believing'
 
@@ -132,17 +117,24 @@ describe "Seeing Is Believing extension", ->
         original: "1\n2  # => "
         expected: "1\n2"
 
-  describe 'when the file is saved', ->
-    xit 'informs SiB of the path and filename'
+  describe 'named and unnamed files', ->
+    describe 'when the file is saved', ->
+      xit 'informs SiB of the path and filename'
+    describe 'when the file is named but not saved', ->
+      xit 'informs SiB of the filename'
+    describe 'when the file is neither named nor saved', ->
+      xit 'lets SiB choose the name'
 
   describe 'when SiB has a displayable error', ->
+    xit 'does not create a notification'
+    xit 'dismisses any previous SiB notifications since it is now working'
 
   describe 'when SiB has a nondisplayable error', ->
     xit 'notifies me of the error'
-    xit 'dismisses any previous SiB notifications soas not to spam us'
+    xit 'dismisses any previous SiB notifications so as not to spam us'
 
   describe 'when the source file is not Ruby, it notifies me in an error', ->
-    xit 'dismisses old notifications'
+    xit 'dismisses any previous SiB notifications so as not to spam us'
     xit 'includes the keybinding to load the grammar selector if it exists'
 
   describe 'updating the buffer non-jarringly', ->
