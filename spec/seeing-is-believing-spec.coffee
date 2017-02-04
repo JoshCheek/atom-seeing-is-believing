@@ -126,12 +126,22 @@ describe "Seeing Is Believing extension", ->
       xit 'lets SiB choose the name'
 
   describe 'when SiB has a displayable error', ->
-    xit 'does not create a notification'
-    xit 'dismisses any previous SiB notifications since it is now working'
+    xit 'has no SiB error notifications, including old ones', ->
+      # set an error notification in some manner (prob by fucking up the grammar)
+      # set the code to raise an error
+      # run
+      # the error is displayed in the output
+      # no notifications: atom.notifications.getNotifications().filter((n) -> !n.dismissed)
 
   describe 'when SiB has a nondisplayable error', ->
-    xit 'notifies me of the error'
-    xit 'dismisses any previous SiB notifications so as not to spam us'
+    xit 'leaves the input alone and notifies me of the error', ->
+      # set the code to have a syntax error or something
+      # run
+      # the code is unchanged
+      # an error notification is displayed
+    xit 'dismisses any previous SiB notifications so as not to spam us', ->
+      # same as above, but run 2x with 2 different errors
+      # assert that we see the first error after the first one but not the second
 
   describe 'when the source file is not Ruby, it notifies me in an error', ->
     xit 'dismisses any previous SiB notifications so as not to spam us'
