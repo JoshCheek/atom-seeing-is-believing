@@ -5,8 +5,6 @@
 #   http://flight-manual.atom.io/hacking-atom/sections/writing-specs/
 # Jasmine 1.3 docs (they use an old Jasmine):
 #   https://jasmine.github.io/1.3/introduction.html#section-Asynchronous_Support
-# NOTE!!! JASMINE MOCKS setTimeout!!
-#   I have no idea how to do something async :(
 # Good reference (a lot of stuff in here is cargo culted from there):
 #   https://github.com/atom/snippets/blob/master/spec/snippets-spec.coffee
 #   Likely to have good integration examples:
@@ -70,7 +68,7 @@
 
 SiB = require '../lib/seeing-is-believing'
 
-# *sigh* for whatever reason, the test environment does not have the env vars
+# For whatever reason, the test environment does not have the env vars
 # from the process. This causes it to be unable to locate the seeing_is_believing
 # executable. So just add them here, ourselves.
 require('child_process').exec '/bin/bash -ilc "command env"', (error, stdout, stderr) ->
@@ -82,7 +80,7 @@ describe "Seeing Is Believing extension", ->
   # I assume this is an iffy way to share state between the lifecycle hooks and the tests
   [editorElement, editor] = []
 
-  # *sigh* the package doesn't activate so we have to do it in this contrived manner
+  # The package doesn't activate corectly, so we have to do this
   activatePackage = (packageName) ->
     # Call the toplevel activation method in order to get the promise
     # We must do this before we activate the package, for whatever reason -.-
