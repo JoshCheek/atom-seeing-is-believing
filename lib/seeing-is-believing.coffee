@@ -106,7 +106,7 @@ module.exports = SeeingIsBelieving =
     element.setScrollTop(scrollTop)
 
   isntRuby: (editor) ->
-    "ruby" != editor.getGrammar().name.toLowerCase()
+    not editor.getGrammar().name.toLowerCase().match(/ruby/i)
 
   expectedRubyError: (editor, keymaps) ->
     grammarName = editor.getGrammar().name

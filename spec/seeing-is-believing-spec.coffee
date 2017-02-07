@@ -143,6 +143,8 @@ describe "Seeing Is Believing extension", ->
       # same as above, but run 2x with 2 different errors
       # assert that we see the first error after the first one but not the second
 
+  # Also consider this issue https://github.com/JoshCheek/atom-seeing-is-believing/issues/32
+  # which had a selector of "semanticolor - Ruby"
   describe 'when the source file is not Ruby, it notifies me in an error', ->
     xit 'dismisses any previous SiB notifications so as not to spam us'
     xit 'includes the keybinding to load the grammar selector if it exists'
