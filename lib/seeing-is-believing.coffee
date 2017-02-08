@@ -22,13 +22,11 @@ module.exports = SeeingIsBelieving =
   config:
     sibCommand:
       title: 'Seeing is believing command'
-      # Update this description, it doesn't need to be so verbose now that Atom checks the environment on its own
-      description: '
-        This is the absolute path to your `seeing_is_believing` command. You may need to run
-        `which seeing_is_believing` or `rbenv which seeing_is_believing` to find this. Examples:
-        `/home/USERNAME/.gem/ruby/2.3.0/bin/seeing_is_believing` or `/usr/local/bin/bundle exec seeing_is_believing`.
-        Alternatively, you could set it to a file containing a script that runs it in a custom environment.
-      '
+      description: '''
+        You don't need this if `seeing_is_believing -e '1+1'` works in a new shell.
+        This package works by passing your code to the command specified here and
+        pasting the output back into Atom. More details in the Readme.
+        '''
       type: 'string'
       default: 'seeing_is_believing'
     flags:

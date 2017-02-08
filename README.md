@@ -51,12 +51,19 @@ If you use rbenv, you may need to `$ rbenv rehash`
 
 ### Custom / non-working Ruby environment
 
-Atom loads your shell environment by launching a shell and printing the environment variables,
-which it then loads into its own environment variables. So, assuming that your system's `SHELL`
-variable is set to your shell, and your shell sets your Ruby, then everything should just work.
+Atom loads your environment by launching a new shell and copying its environment
+variables into Atom's environment variables. So, assuming that your shell sets
+your Ruby, then everything should just work. Note that [it looks](https://github.com/atom/atom/blob/9ab6a07df3c9f271d9d4fb5ff2a9b257e3bc8fb7/src/update-process-env.js#L79)
+in the `SHELL` environment variable to decide what shell to use
+(you can change yours with `chsh`).
 
-If not, though, you can create your own executable to set up the environment and run Seeing Is Believing.
-The "Seeing is believing command" option is available in the configuraiton, it's intended for this purpose.
+If `seeing_is_believing` is not available by default in a new shell (perhaps
+because it's not located in a `$PATH` directory, or your Ruby environment needs
+some fancier setup) then you can use the "Seeing is believing command"
+configuration option to either change the name or pass an absolute path to a
+script you wrote. This allows you total control over how to set it up.
+I've used this to setup non-standard environments and then exec SiB.
+When I want to try features from my development SiB, I set mine to `/Users/josh/code/seeing_is_believing/bin/seeing_is_believing`.
 
 
 ### Flags
