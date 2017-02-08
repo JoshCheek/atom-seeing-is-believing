@@ -1,7 +1,7 @@
 {
   "name": "seeing-is-believing",
   "main": "./lib/seeing-is-believing",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Runs your code, adding comments to each line, showing the inspection of what that line evaluates to.",
   "activationCommands": {
     "atom-workspace": [
