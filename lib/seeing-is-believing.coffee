@@ -18,6 +18,11 @@ spawn = require('child_process').spawn
 #   if there is not stderr or stdout
 #     close the stdout / stderr panes if they are open
 
+
+# https://github.com/JoshCheek/atom-seeing-is-believing/issues/35#issuecomment-342811715
+defaultCmd = 'seeing_is_believing'
+defaultCmd += '.bat' if /^win/.test(process.platform)
+
 module.exports = SeeingIsBelieving =
   config:
     sibCommand:
@@ -28,7 +33,7 @@ module.exports = SeeingIsBelieving =
         pasting the output back into Atom. More details in the Readme.
         '''
       type: 'string'
-      default: 'seeing_is_believing'
+      default: defaultCmd
     flags:
       description: 'You can get a full list of flags by running seeing_is_believing --help'
       type: 'array'
