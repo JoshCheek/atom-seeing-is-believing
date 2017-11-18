@@ -37,10 +37,13 @@ module.exports = SeeingIsBelieving =
     flags:
       description: 'You can get a full list of flags by running seeing_is_believing --help'
       type: 'array'
-      default: ['--alignment-strategy', 'chunk',
-                '--number-of-captures', '300',
-                '--line-length',        '1000',
-                '--timeout',            '12']
+      default: [ '--alignment-strategy', 'chunk',
+                 '--number-of-captures', '300',
+                 '--line-length',        '1000',
+                 '--timeout',            '12',
+                 '--local-cwd',
+                 '--ignore-unknown-flags'
+               ]
       items:
         type: 'string'
 
